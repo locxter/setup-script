@@ -10,6 +10,6 @@ I generally try to minimize dependencies, but I'm a one man crew and can therefo
 
 - Everything needed is already preinstalled on modern Ubuntu versions.
 
-## How to install it on Linux
+## How to install it
 
-Simply execute the `setup.sh` script and you should be read to go.
+Simply execute the `setup.sh` script and you should be ready to go.
