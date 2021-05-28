@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Updating package information."
+sudo apt update
 echo "Installing basic tools (totem, rhythmbox, deja-dup, bleachbit, libimage-exiftool-perl)."
 sudo apt install totem rhythmbox deja-dup bleachbit libimage-exiftool-perl -y
 echo "Installing office tools (simple-scan, pandoc, texlive-full, libreoffice)."
@@ -39,4 +41,6 @@ sudo cat > /etc/NetworkManager/conf.d/nodns.conf << EOF
 dns=none
 systemd-resolved=false 
 EOF
+echo "Cleaning package cache."
+sudo apt clean
 echo "Setup complete."
