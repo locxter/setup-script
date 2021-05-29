@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository includes my personal software setup script for Ubuntu.
+This repository includes my personal setup script for most of the terminal based configuration needed on a fresh Ubuntu minimal installation.
 
 ## Dependencies
 
