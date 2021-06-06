@@ -12,4 +12,4 @@ I generally try to minimize dependencies, but I'm a one man crew and can therefo
 
 ## How to install it
 
-Simply execute the `setup.sh` script and you should be ready to go.
+Simply execute the `setup.sh` script with root privileges via `sudo ./setup.sh` and you should be ready to go.
