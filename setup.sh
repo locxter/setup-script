@@ -1,6 +1,8 @@
 #!/bin/bash
 echo "Updating package information."
 apt update
+echo "Updating system"
+apt full-upgrade
 echo "Installing basic tools (totem, rhythmbox, deja-dup, bleachbit, libimage-exiftool-perl)."
 apt install totem rhythmbox deja-dup bleachbit libimage-exiftool-perl -y
 echo "Installing office tools (simple-scan, pandoc, texlive-full, libreoffice)."
