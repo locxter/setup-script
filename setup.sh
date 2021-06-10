@@ -2,7 +2,7 @@
 echo "Started the setup."
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox deja-dup bleachbit libimage-exiftool-perl simple-scan gedit-plugins libreoffice pandoc texlive-full arduino codeblocks git openscad cura inkscape -y
+apt install totem rhythmbox deja-dup simple-scan libreoffice bleachbit libimage-exiftool-perl git gedit-plugins arduino codeblocks openscad cura inkscape -y
 apt clean
 printf "[user]\nname=locxter\nemail=54595101+locxter@users.noreply.github.com" > /home/locxter/.gitconfig
 chown -R locxter:locxter /home/locxter/.gitconfig
@@ -20,6 +20,10 @@ wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-te
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.layout https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.layout
 mkdir -p /home/locxter/.config/inkscape/templates
 wget -O /home/locxter/.config/inkscape/templates/default.svg https://raw.githubusercontent.com/locxter/inkscape-template/main/default.svg
+mkdir -p /home/locxter/.config/libreoffice/4/user/template
+wget -O /home/locxter/.config/libreoffice/4/user/template/document-template.ott https://raw.githubusercontent.com/locxter/document-template/main/document-template.ott
+wget -O /home/locxter/.config/libreoffice/4/user/template/report-template.ott https://raw.githubusercontent.com/locxter/report-template/main/report-template.ott
+wget -O /home/locxter/.config/libreoffice/4/user/template/presentation-template.otp https://raw.githubusercontent.com/locxter/presentation-template/main/presentation-template.otp
 chown -R locxter:locxter /home/locxter/.config
 mkdir -p /home/locxter/.local/share/gtksourceview-4/language-specs
 wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/arduino.lang https://raw.githubusercontent.com/kaochen/GtkSourceView-Arduino/master/arduino.lang
