@@ -1,11 +1,45 @@
 #!/bin/bash
 echo "Started the setup."
+read -e -p "Add backup stuff to this computer? [Y/n]"
+echo $REPLY
+if [[ $REPLY == [Yy]* ]]
+then
+    BACKUP_STUFF=true
+else
+    BACKUP_STUFF=false
+fi
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox deja-dup simple-scan libreoffice bleachbit libimage-exiftool-perl git gedit-plugins arduino codeblocks openscad cura inkscape -y
+apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl syncthing git gedit-plugins arduino codeblocks openscad cura inkscape -y
+if [ "$BACKUP_STUFF" = true ]
+then
+    apt install deja-dup -y
+fi
 apt clean
 printf "[user]\nname=locxter\nemail=54595101+locxter@users.noreply.github.com" > /home/locxter/.gitconfig
 chown -R locxter:locxter /home/locxter/.gitconfig
+if [ "$BACKUP_STUFF" = true ]
+then
+    mkdir -p /home/locxter/.config/autostart
+    cat << EOF > /home/locxter/.config/autostart/mount-backup-drive.desktop
+[Desktop Entry]
+Type=Application
+Exec=bash -c "if ! test -e /media/locxter/backup; then until udisksctl unlock -b /dev/sdb1 --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password.'; done; udisksctl mount -b /dev/dm-4 && deja-dup --backup; fi"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Mount backup drive
+EOF
+    cat << EOF > /home/locxter/.config/autostart/mount-data-drive.desktop
+[Desktop Entry]
+Type=Application
+Exec=bash -c "if ! test -e /media/locxter/data; then until udisksctl unlock -b /dev/sda1 --key-file <(zenity --password --title='Mount data drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b /dev/dm-3 && syncthing -no-browser; fi"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Mount data drive
+EOF
+fi
 mkdir -p /home/locxter/.config/codeblocks/UserTemplates/c-template
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.layout https://raw.githubusercontent.com/locxter/c-template/main/c-template.layout
@@ -31,7 +65,17 @@ wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/arduino.lang h
 wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/scad.lang https://raw.githubusercontent.com/AndrewJamesTurner/openSCAD-lang-file/master/scad.lang
 chown -R locxter:locxter /home/locxter/.local
 mkdir -p /etc/systemd/resolved.conf.d
-printf "[Resolve]\nDNS=78.46.244.143#dot-de.blahdns.com\nDNSOverTLS=yes" > /etc/systemd/resolved.conf.d/upstream.conf
+cat << EOF > /etc/systemd/resolved.conf.d/upstream.conf
+[Resolve]
+DNS=78.46.244.143#dot-de.blahdns.com
+DNSOverTLS=yes
+EOF
 mkdir -p /etc/NetworkManager/conf.d
-printf "[main]\ndns=none\nsystemd-resolved=false" > /etc/NetworkManager/conf.d/nodns.conf
+cat << EOF > /etc/NetworkManager/conf.d/nodns.conf
+[main]
+dns=none
+systemd-resolved=false
+EOF
 echo "Finished the setup successfully."
+
+apt install deja-dup -y
