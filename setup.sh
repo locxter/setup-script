@@ -102,5 +102,3 @@ dns=none
 systemd-resolved=false
 EOF
 echo "Finished the setup successfully."
-
-apt install deja-dup -y
