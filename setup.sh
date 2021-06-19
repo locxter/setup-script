@@ -17,7 +17,7 @@ else
 fi
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl syncthing git gedit-plugins arduino codeblocks openscad cura inkscape -y
+apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors syncthing git gedit-plugins arduino codeblocks openscad cura inkscape -y
 if [ "$BACKUP_STUFF" = true ]
 then
     apt install deja-dup -y
