@@ -17,7 +17,7 @@ else
 fi
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors syncthing git gedit-plugins arduino codeblocks openscad cura inkscape -y
+apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors syncthing git gedit-plugins arduino codeblocks freecad cura inkscape -y
 if [ "$BACKUP_STUFF" = true ]
 then
     apt install deja-dup -y
@@ -87,7 +87,6 @@ wget -O /home/locxter/.config/libreoffice/4/user/template/spreadsheet-template.o
 chown -R locxter:locxter /home/locxter/.config
 mkdir -p /home/locxter/.local/share/gtksourceview-4/language-specs
 wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/arduino.lang https://raw.githubusercontent.com/kaochen/GtkSourceView-Arduino/master/arduino.lang
-wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/scad.lang https://raw.githubusercontent.com/AndrewJamesTurner/openSCAD-lang-file/master/scad.lang
 chown -R locxter:locxter /home/locxter/.local
 mkdir -p /etc/systemd/resolved.conf.d
 cat << EOF > /etc/systemd/resolved.conf.d/upstream.conf
