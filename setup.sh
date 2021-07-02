@@ -1,32 +1,43 @@
 #!/bin/bash
 echo "Started the setup."
-read -p "Enter the device representing the locked data drive: " REPLY
-LOCKED_DATA_DRIVE=$REPLY
-read -p "Enter the device representing the unlocked data drive: " REPLY
-UNLOCKED_DATA_DRIVE=$REPLY
-read -p "Add backup stuff to this computer? [Y/n] " REPLY
+read -p "Add data scripts and programs to this computer? [Y/n] " REPLY
 if [[ $REPLY == [Yy]* ]]
 then
-    BACKUP_STUFF=true
+    DATA=true
+    read -p "Enter the device representing the locked data drive: " REPLY
+    LOCKED_DATA_DRIVE=$REPLY
+    read -p "Enter the device representing the unlocked data drive: " REPLY
+    UNLOCKED_DATA_DRIVE=$REPLY
+else
+    DATA=false
+fi
+read -p "Add backup scripts and programs to this computer? [Y/n] " REPLY
+if [[ $REPLY == [Yy]* ]]
+then
+    BACKUP=true
     read -p "Enter the device representing the locked backup drive: " REPLY
     LOCKED_BACKUP_DRIVE=$REPLY
     read -p "Enter the device representing the unlocked backup drive: " REPLY
     UNLOCKED_BACKUP_DRIVE=$REPLY
 else
-    BACKUP_STUFF=false
+    BACKUP=false
 fi
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors syncthing git gedit-plugins arduino codeblocks freecad cura inkscape -y
-if [ "$BACKUP_STUFF" = true ]
+apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors git gedit-plugins arduino codeblocks freecad cura inkscape -y
+if [ "$DATA" = true ]
+then
+    apt install syncthing -y
+fi
+if [ "$BACKUP" = true ]
 then
     apt install deja-dup -y
 fi
 apt clean
-printf "[user]\nname=locxter\nemail=54595101+locxter@users.noreply.github.com" > /home/locxter/.gitconfig
-chown -R locxter:locxter /home/locxter/.gitconfig
-mkdir -p /home/locxter/.config/autostart
-cat << EOF > /home/locxter/.config/autostart/mount-data-drive.desktop
+if [ "$DATA" = true ]
+then
+    mkdir -p /home/locxter/.config/autostart
+    cat << EOF > /home/locxter/.config/autostart/mount-data-drive.desktop
 [Desktop Entry]
 Type=Application
 Exec=bash -c "if ! test -e /media/locxter/data; then while ! udisksctl unlock -b $LOCKED_DATA_DRIVE --key-file <(zenity --password --title='Mount data drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_DATA_DRIVE; syncthing -no-browser; fi"
@@ -35,7 +46,7 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name=Mount data drive
 EOF
-cat << EOF > /home/locxter/.config/autostart/start-file-sync.desktop
+    cat << EOF > /home/locxter/.config/autostart/start-file-sync.desktop
 [Desktop Entry]
 Type=Application
 Exec=bash -c "if test -e /media/locxter/data; then syncthing -no-browser; fi"
@@ -44,8 +55,10 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name=Start file sync
 EOF
-if [ "$BACKUP_STUFF" = true ]
+fi
+if [ "$BACKUP" = true ]
 then
+    mkdir -p /home/locxter/.config/autostart
     cat << EOF > /home/locxter/.config/autostart/mount-backup-drive.desktop
 [Desktop Entry]
 Type=Application
@@ -55,7 +68,7 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name=Mount backup drive
 EOF
-cat << EOF > /home/locxter/.config/autostart/start-backup.desktop
+    cat << EOF > /home/locxter/.config/autostart/start-backup.desktop
 [Desktop Entry]
 Type=Application
 Exec=bash -c "if test -e /media/locxter/backup && test -e /media/locxter/data; then deja-dup --backup; fi"
@@ -65,6 +78,11 @@ X-GNOME-Autostart-enabled=true
 Name=Start backup
 EOF
 fi
+cat << EOF > /home/locxter/.gitconfig
+[user]
+name=locxter
+email=54595101+locxter@users.noreply.github.com
+EOF
 mkdir -p /home/locxter/.config/codeblocks/UserTemplates/c-template
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.layout https://raw.githubusercontent.com/locxter/c-template/main/c-template.layout
@@ -84,10 +102,9 @@ wget -O /home/locxter/.config/libreoffice/4/user/template/document-template.ott 
 wget -O /home/locxter/.config/libreoffice/4/user/template/report-template.ott https://raw.githubusercontent.com/locxter/report-template/main/report-template.ott
 wget -O /home/locxter/.config/libreoffice/4/user/template/presentation-template.otp https://raw.githubusercontent.com/locxter/presentation-template/main/presentation-template.otp
 wget -O /home/locxter/.config/libreoffice/4/user/template/spreadsheet-template.ots https://raw.githubusercontent.com/locxter/spreadsheet-template/main/spreadsheet-template.ots
-chown -R locxter:locxter /home/locxter/.config
 mkdir -p /home/locxter/.local/share/gtksourceview-4/language-specs
 wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/arduino.lang https://raw.githubusercontent.com/kaochen/GtkSourceView-Arduino/master/arduino.lang
-chown -R locxter:locxter /home/locxter/.local
+chown -R locxter:locxter /home/locxter
 mkdir -p /etc/systemd/resolved.conf.d
 cat << EOF > /etc/systemd/resolved.conf.d/upstream.conf
 [Resolve]
