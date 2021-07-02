@@ -33,6 +33,7 @@ if [ "$BACKUP" = true ]
 then
     apt install deja-dup -y
 fi
+apt autoremove --purge
 apt clean
 snap install netbeans --classic
 if [ "$DATA" = true ]
