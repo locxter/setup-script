@@ -24,7 +24,7 @@ else
 fi
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors git gedit-plugins arduino codeblocks freecad cura inkscape -y
+apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors git default-jdk gedit-plugins arduino codeblocks freecad cura inkscape -y
 if [ "$DATA" = true ]
 then
     apt install syncthing -y
@@ -34,6 +34,7 @@ then
     apt install deja-dup -y
 fi
 apt clean
+snap install netbeans --classic
 if [ "$DATA" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
