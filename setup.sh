@@ -24,7 +24,7 @@ else
 fi
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors git default-jdk gedit-plugins arduino codeblocks freecad cura inkscape -y
+apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors git default-jdk gedit-plugins arduino codeblocks freecad cura inkscape anki -y
 if [ "$DATA" = true ]
 then
     apt install syncthing -y
