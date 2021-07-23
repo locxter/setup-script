@@ -99,6 +99,8 @@ mkdir -p /home/locxter/.config/codeblocks/UserTemplates/opencv-template
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/main.cpp https://raw.githubusercontent.com/locxter/opencv-template/main/main.cpp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.cbp https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.cbp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.layout https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.layout
+mkdir -p /home/locxter/snap/netbeans/common/data/12.4/config/Templates/Classes
+wget -O /home/locxter/snap/netbeans/common/data/12.4/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
 mkdir -p /home/locxter/.config/inkscape/templates
 wget -O /home/locxter/.config/inkscape/templates/default.svg https://raw.githubusercontent.com/locxter/inkscape-template/main/default.svg
 mkdir -p /home/locxter/.config/libreoffice/4/user/template
@@ -109,6 +111,8 @@ wget -O /home/locxter/.config/libreoffice/4/user/template/spreadsheet-template.o
 mkdir -p /home/locxter/.local/share/gtksourceview-4/language-specs
 wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/arduino.lang https://raw.githubusercontent.com/kaochen/GtkSourceView-Arduino/master/arduino.lang
 chown -R locxter:locxter /home/locxter
+mkdir -p /usr/share/arduino/examples/01.Basics/BareMinimum
+wget -O /usr/share/arduino/examples/01.Basics/BareMinimum/BareMinimum.ino https://raw.githubusercontent.com/locxter/arduino-template/main/arduino-template.ino
 mkdir -p /etc/systemd/resolved.conf.d
 cat << EOF > /etc/systemd/resolved.conf.d/upstream.conf
 [Resolve]
