@@ -84,6 +84,8 @@ cat << EOF > /home/locxter/.gitconfig
 [user]
 name=locxter
 email=54595101+locxter@users.noreply.github.com
+[init]
+defaultBranch = main
 EOF
 mkdir -p /home/locxter/.config/codeblocks/UserTemplates/c-template
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
