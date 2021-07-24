@@ -101,6 +101,7 @@ wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-te
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.layout https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.layout
 mkdir -p /home/locxter/snap/netbeans/common/data/12.4/config/Templates/Classes
 wget -O /home/locxter/snap/netbeans/common/data/12.4/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
+wget -O /home/locxter/snap/netbeans/common/data/12.4/config/Templates/Classes/Class.java https://raw.githubusercontent.com/locxter/java-template/main/Class.java
 mkdir -p /home/locxter/.config/inkscape/templates
 wget -O /home/locxter/.config/inkscape/templates/default.svg https://raw.githubusercontent.com/locxter/inkscape-template/main/default.svg
 mkdir -p /home/locxter/.config/libreoffice/4/user/template
