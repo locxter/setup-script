@@ -1,42 +1,42 @@
 #!/bin/bash
 echo "Started the setup."
-read -p "Add data scripts and programs to this computer? [Y/n] " REPLY
+read -p "Add data drive scripts and programs to this computer? [Y/n] " REPLY
 if [[ $REPLY == [Yy]* ]]
 then
-    DATA=true
+    DATA_DRIVE=true
     read -p "Enter the device representing the locked data drive: " REPLY
     LOCKED_DATA_DRIVE=$REPLY
     read -p "Enter the device representing the unlocked data drive: " REPLY
     UNLOCKED_DATA_DRIVE=$REPLY
 else
-    DATA=false
+    DATA_DRIVE=false
 fi
-read -p "Add backup scripts and programs to this computer? [Y/n] " REPLY
+read -p "Add backup drive scripts and programs to this computer? [Y/n] " REPLY
 if [[ $REPLY == [Yy]* ]]
 then
-    BACKUP=true
+    BACKUP_DRIVE=true
     read -p "Enter the device representing the locked backup drive: " REPLY
     LOCKED_BACKUP_DRIVE=$REPLY
     read -p "Enter the device representing the unlocked backup drive: " REPLY
     UNLOCKED_BACKUP_DRIVE=$REPLY
 else
-    BACKUP=false
+    BACKUP_DRIVE=false
 fi
 apt update
 apt full-upgrade -y
 apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors git default-jdk gedit-plugins arduino codeblocks freecad cura inkscape anki -y
-if [ "$DATA" = true ]
+if [ "$DATA_DRIVE" = true ]
 then
     apt install syncthing -y
 fi
-if [ "$BACKUP" = true ]
+if [ "$BACKUP_DRIVE" = true ]
 then
     apt install deja-dup -y
 fi
 apt autoremove --purge -y
 apt clean
 snap install netbeans --classic
-if [ "$DATA" = true ]
+if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
     cat << EOF > /home/locxter/.config/autostart/mount-data-drive.desktop
@@ -58,7 +58,7 @@ X-GNOME-Autostart-enabled=true
 Name=Start file sync
 EOF
 fi
-if [ "$BACKUP" = true ]
+if [ "$BACKUP_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
     cat << EOF > /home/locxter/.config/autostart/mount-backup-drive.desktop
