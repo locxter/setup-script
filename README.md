@@ -12,4 +12,4 @@ I generally try to minimize dependencies, but I'm a one man crew and can therefo
 
 ## How to use it
 
-Simply execute the `setup.sh` script with root privileges via `sudo ./setup.sh` and you should be ready to go. On Ubuntu 21.04 Hirsute Hippo you additionally have to run the `fix-arduino-on-hirsute-hippo.sh` script with root privileges via `sudo ./fix-arduino-on-hirsute-hippo.sh` to get the Arduino IDE to work.
+Simply set the background and profile picture, execute the `setup.sh` script with root privileges via `sudo ./setup.sh`, change the session to `Flat Remix on Wayland`, tweak some more settings using the GUI and you should be ready to go. On Ubuntu 21.04 Hirsute Hippo you additionally have to run the `fix-arduino-on-hirsute-hippo.sh` script with root privileges via `sudo ./fix-arduino-on-hirsute-hippo.sh` to get the Arduino IDE to work.
