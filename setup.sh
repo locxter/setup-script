@@ -24,7 +24,8 @@ else
 fi
 apt update
 apt full-upgrade -y
-apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors git default-jdk python3-pip adb fastboot gedit-plugins arduino codeblocks freecad cura inkscape anki -y
+add-apt-repository ppa:daniruiz/flat-remix -y
+apt install totem rhythmbox simple-scan libreoffice bleachbit libimage-exiftool-perl lm-sensors neofetch git default-jdk python3-pip adb fastboot gedit-plugins gnome-tweaks gnome-shell-extensions gnome-shell-extension-dashtodock flat-remix flat-remix-gtk flat-remix-gnome arduino codeblocks freecad cura inkscape anki -y
 if [ "$DATA_DRIVE" = true ]
 then
     apt install syncthing -y
