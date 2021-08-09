@@ -37,6 +37,10 @@ fi
 apt autoremove --purge -y
 apt clean
 snap install netbeans --classic
+snap install flat-remix flat-remix-gtk
+for plug in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do snap connect ${plug} flat-remix:icon-themes; done
+for plug in $(snap connections | grep gtk-common-themes:gtk-2-themes | awk '{print $2}'); do snap connect ${plug} flat-remix-gtk:gtk-2-themes; done
+for plug in $(snap connections | grep gtk-common-themes:gtk-3-themes | awk '{print $2}'); do snap connect ${plug} flat-remix-gtk:gtk-3-themes; done
 if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
