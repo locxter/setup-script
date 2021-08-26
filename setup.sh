@@ -41,6 +41,7 @@ snap install flat-remix flat-remix-gtk
 for plug in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do snap connect ${plug} flat-remix:icon-themes; done
 for plug in $(snap connections | grep gtk-common-themes:gtk-2-themes | awk '{print $2}'); do snap connect ${plug} flat-remix-gtk:gtk-2-themes; done
 for plug in $(snap connections | grep gtk-common-themes:gtk-3-themes | awk '{print $2}'); do snap connect ${plug} flat-remix-gtk:gtk-3-themes; done
+ufw enable
 if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
@@ -131,4 +132,9 @@ cat << EOF > /etc/NetworkManager/conf.d/nodns.conf
 dns=none
 systemd-resolved=false
 EOF
-echo "Finished the setup successfully."
+cat << EOF > /etc/NetworkManager/conf.d/50-macchange.conf
+[connection-mac-randomization]
+ethernet.cloned-mac-address=stable
+wifi.cloned-mac-address=stable
+EOF
+echo "Finished the setup, please check the console output for errors that might occurred."
