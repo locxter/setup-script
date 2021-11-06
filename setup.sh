@@ -43,44 +43,51 @@ else
     BACKUP_DRIVE=false
 fi
 echo "################################################################################"
-echo "#            Updating the system and installing additional software            #"
+echo "#               Changing the apt repositories to Debian Unstable               #"
 echo "################################################################################"
-dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm -y
-dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
-dnf check-update
-dnf upgrade -y
-dnf install gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel -y
-dnf install lame\* --exclude=lame-devel -y
-dnf group upgrade --with-optional Multimedia -y
-dnf install lm_sensors neofetch htop git android-tools gcc-c++ java-11-openjdk-devel tilp2 gedit-plugins bleachbit chromium inkscape anki codeblocks arduino freecad cura -y
+cat << EOF > /etc/apt/sources.list
+deb https://deb.debian.org/debian sid main contrib non-free
+deb-src https://deb.debian.org/debian sid main contrib non-free
+EOF
+echo "################################################################################"
+echo "#              Removing unnecessary software, updating the system              #"
+echo "#                      and installing additional software                      #"
+echo "################################################################################"
+apt update
+apt purge aisleriot five-or-more four-in-a-row gnome-2048 gnome-chess gnome-klotski gnome-mahjongg gnome-mines gnome-nibbles gnome-robots gnome-sudoku gnome-taquin gnome-tetravex hitori iagno lightsoff quadrapassel swell-foop tali gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs -y
+apt full-upgrade -y
+apt install neofetch htop git lm-sensors ufw locales-all flatpak gnome-software-plugin-flatpak default-jdk adb fastboot poppler-utils gedit-plugins bleachbit metadata-cleaner gnome-boxes tilp2 arduino codeblocks freecad cura inkscape anki chromium -y
 if [ "$DATA_DRIVE" = true ]
 then
-    dnf install syncthing -y
+    apt install syncthing -y
 fi
 if [ "$BACKUP_DRIVE" = true ]
 then
-    dnf install deja-dup -y
+    apt install deja-dup -y
 fi
-dnf autoremove -y
-dnf clean all
+apt autoremove --purge -y
+apt clean
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub fr.romainvigier.MetadataCleaner com.tutanota.Tutanota org.signal.Signal org.apache.netbeans -y
+flatpak install flathub com.tutanota.Tutanota org.signal.Signal org.apache.netbeans -y
+echo "################################################################################"
+echo "#                          Configuring the bootloader                          #"
+echo "################################################################################"
+mkdir -p /etc/default
+cat << EOF > /etc/default/grub
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=0
+GRUB_DISTRIBUTOR="Debian"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3"
+EOF
+update-grub
 echo "################################################################################"
 echo "#                           Configuring the firewall                           #"
 echo "################################################################################"
-firewall-cmd --remove-port=1025-65535/tcp --remove-port=1025-65535/udp
-firewall-cmd --add-service=syncthing
-firewall-cmd --runtime-to-permanent
+ufw enable
+ufw allow syncthing
 echo "################################################################################"
 echo "#                Configuring DNS over TLS and mac randomization                #"
 echo "################################################################################"
-mkdir -p /etc/systemd/resolved.conf.d
-cat << EOF > /etc/systemd/resolved.conf.d/dnsforge.conf
-[Resolve]
-DNS=176.9.93.198#dnsforge.de
-DNS=176.9.1.117#dnsforge.de
-DNSOverTLS=yes
-EOF
 mkdir -p /etc/NetworkManager/conf.d
 cat << EOF > /etc/NetworkManager/conf.d/no-dns.conf
 [main]
@@ -94,6 +101,18 @@ wifi.scan-rand-mac-address=yes
 ethernet.cloned-mac-address=stable
 wifi.cloned-mac-address=stable
 EOF
+mkdir -p /etc
+cat << EOF > /etc/resolv.conf
+nameserver 127.0.0.53
+EOF
+mkdir -p /etc/systemd
+cat << EOF > /etc/systemd/resolved.conf
+[Resolve]
+DNS=176.9.93.198#dnsforge.de
+DNS=176.9.1.117#dnsforge.de
+DNSOverTLS=yes
+EOF
+systemctl enable systemd-resolved
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
@@ -105,7 +124,7 @@ then
     cat << EOF > /home/locxter/.config/autostart/mount-data-drive.desktop
 [Desktop Entry]
 Type=Application
-Exec=bash -c "if ! test -e /run/media/locxter/data; then while ! udisksctl unlock -b $LOCKED_DATA_DRIVE --key-file <(zenity --password --title='Mount data drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_DATA_DRIVE; syncthing -no-browser; fi"
+Exec=bash -c "if ! test -e /media/locxter/data; then while ! udisksctl unlock -b $LOCKED_DATA_DRIVE --key-file <(zenity --password --title='Mount data drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_DATA_DRIVE; syncthing -no-browser; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -114,7 +133,7 @@ EOF
     cat << EOF > /home/locxter/.config/autostart/start-file-sync.desktop
 [Desktop Entry]
 Type=Application
-Exec=bash -c "if test -e /run/media/locxter/data; then syncthing -no-browser; fi"
+Exec=bash -c "if test -e /media/locxter/data; then syncthing -no-browser; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -127,7 +146,7 @@ then
     cat << EOF > /home/locxter/.config/autostart/mount-backup-drive.desktop
 [Desktop Entry]
 Type=Application
-Exec=bash -c "if ! test -e /run/media/locxter/backup; then while ! udisksctl unlock -b $LOCKED_BACKUP_DRIVE --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_BACKUP_DRIVE; while ! test -e /run/media/locxter/data; do zenity --error --text='Data drive not mounted'; done; deja-dup --backup; fi"
+Exec=bash -c "if ! test -e /media/locxter/backup; then while ! udisksctl unlock -b $LOCKED_BACKUP_DRIVE --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_BACKUP_DRIVE; while ! test -e /media/locxter/data; do zenity --error --text='Data drive not mounted'; done; deja-dup --backup; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -136,7 +155,7 @@ EOF
     cat << EOF > /home/locxter/.config/autostart/start-backup.desktop
 [Desktop Entry]
 Type=Application
-Exec=bash -c "if test -e /run/media/locxter/backup && test -e /run/media/locxter/data; then deja-dup --backup; fi"
+Exec=bash -c "if test -e /media/locxter/backup && test -e /media/locxter/data; then deja-dup --backup; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -150,7 +169,19 @@ email=54595101+locxter@users.noreply.github.com
 [init]
 defaultBranch = main
 EOF
-unzip -o firefox-profile.zip -d /home/locxter/.mozilla/firefox/*.default-release
+mkdir -p /home/locxter/.mozilla/firefox
+sudo -E -u locxter firefox -createProfile "locxter /home/locxter/.mozilla/firefox/locxter"
+unzip -o firefox-profile.zip -d /home/locxter/.mozilla/firefox/locxter
+cat << EOF > /home/locxter/.mozilla/firefox/profiles.ini
+[Profile0]
+Name=locxter
+IsRelative=1
+Path=locxter
+
+[General]
+StartWithLastProfile=0
+Version=2
+EOF
 mkdir -p /home/locxter/.config/codeblocks/UserTemplates/c-template
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.layout https://raw.githubusercontent.com/locxter/c-template/main/c-template.layout
@@ -174,18 +205,20 @@ wget -O /home/locxter/.config/libreoffice/4/user/template/report-template.ott ht
 wget -O /home/locxter/.config/libreoffice/4/user/template/presentation-template.otp https://raw.githubusercontent.com/locxter/presentation-template/main/presentation-template.otp
 wget -O /home/locxter/.config/libreoffice/4/user/template/spreadsheet-template.ots https://raw.githubusercontent.com/locxter/spreadsheet-template/main/spreadsheet-template.ots
 wget -O /home/locxter/.config/libreoffice/4/user/template/timetable-template.ott https://raw.githubusercontent.com/locxter/timetable-template/main/timetable-template.ott
+mkdir -p /home/locxter/.config/libreoffice/4/user/autocorr
+cp autocorrect-de.dat /home/locxter/.config/libreoffice/4/user/autocorr/acor_de-DE.dat
 mkdir -p /home/locxter/.local/share/gtksourceview-4/language-specs
 wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/arduino.lang https://raw.githubusercontent.com/kaochen/GtkSourceView-Arduino/master/arduino.lang
 chown -R locxter:locxter /home/locxter
 echo "################################################################################"
-echo "#                          Adding the profile picture                          #"
+echo "#                          Setting my profile picture                          #"
 echo "################################################################################"
-cp profile-picture.jpeg /usr/share/pixmaps/faces/locxter.jpeg
-cp profile-picture.jpeg /var/lib/AccountsService/icons/locxter
+cp profile-picture.jpeg /home/locxter/.face
 echo "################################################################################"
-echo "#                Add favorite apps to the dash and press a key:                #"
+echo "#              Adding apps to the dash and resorting the app grid              #"
 echo "################################################################################"
-read -s -n 1
+sudo -E -u locxter gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'com.tutanota.Tutanota.desktop', 'org.signal.Signal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
+sudo -E -u locxter gsettings set org.gnome.desktop.app-folders folder-children "['']"
 sudo -E -u locxter gsettings set org.gnome.shell app-picker-layout "[]"
 echo "################################################################################"
 echo "#        Finished the setup, please check the console output for errors        #"
