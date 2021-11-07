@@ -56,7 +56,7 @@ echo "##########################################################################
 apt update
 apt purge aisleriot five-or-more four-in-a-row gnome-2048 gnome-chess gnome-klotski gnome-mahjongg gnome-mines gnome-nibbles gnome-robots gnome-sudoku gnome-taquin gnome-tetravex hitori iagno lightsoff quadrapassel swell-foop tali gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs -y
 apt full-upgrade -y
-apt install neofetch htop git lm-sensors ufw locales-all flatpak gnome-software-plugin-flatpak default-jdk adb fastboot poppler-utils gedit-plugins bleachbit metadata-cleaner gnome-boxes tilp2 arduino codeblocks freecad cura inkscape anki chromium -y
+apt install neofetch htop git lm-sensors ufw cups locales-all flatpak gnome-software-plugin-flatpak default-jdk adb fastboot poppler-utils gedit-plugins bleachbit metadata-cleaner gnome-boxes tilp2 arduino codeblocks freecad cura inkscape anki chromium -y
 if [ "$DATA_DRIVE" = true ]
 then
     apt install syncthing -y
