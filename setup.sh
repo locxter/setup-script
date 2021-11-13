@@ -182,6 +182,36 @@ Path=locxter
 StartWithLastProfile=0
 Version=2
 EOF
+mkdir -p /home/locxter/.local/share/rhythmbox
+cat << EOF > /home/locxter/.local/share/rhythmbox/rhythmdb.xml
+<?xml version="1.0" standalone="yes"?>
+<rhythmdb version="2.0">
+  <entry type="iradio">
+    <title>NDR N-Joy AAC 48kHz</title>
+    <location>http://www.ndr.de/resources/metadaten/audio/aac/n-joy.m3u</location>
+  </entry>
+  <entry type="iradio">
+    <title>NDR N-JOY Club</title>
+    <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop5.m3u</location>
+  </entry>
+  <entry type="iradio">
+    <title>NDR N-JOY Morningshow</title>
+    <location>http://www.ndr.de/resources/metadaten/audio/m3u/ndrloop27.m3u</location>
+  </entry>
+  <entry type="iradio">
+    <title>NDR N-JOY Pop</title>
+    <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop29.m3u</location>
+  </entry>
+  <entry type="iradio">
+    <title>NDR N-JOY Soundfiles Hip-Hop</title>
+    <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop6.m3u</location>
+  </entry>
+  <entry type="iradio">
+    <title>NDR N-JOY Weltweit</title>
+    <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop28.m3u</location>
+  </entry>
+</rhythmdb>
+EOF
 mkdir -p /home/locxter/.config/codeblocks/UserTemplates/c-template
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.layout https://raw.githubusercontent.com/locxter/c-template/main/c-template.layout
