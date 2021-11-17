@@ -77,7 +77,7 @@ cat << EOF > /etc/default/grub
 GRUB_DEFAULT=0
 GRUB_TIMEOUT=0
 GRUB_DISTRIBUTOR="Debian"
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3"
 EOF
 update-grub
 echo "################################################################################"
