@@ -85,6 +85,7 @@ echo "#                           Configuring the firewall                      
 echo "################################################################################"
 ufw enable
 ufw allow syncthing
+ufw allow transmission
 echo "################################################################################"
 echo "#                Configuring DNS over TLS and mac randomization                #"
 echo "################################################################################"
