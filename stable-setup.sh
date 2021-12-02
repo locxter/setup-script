@@ -46,29 +46,33 @@ echo "##########################################################################
 echo "#                        Modifying the apt repositories                        #"
 echo "################################################################################"
 cat << EOF > /etc/apt/sources.list
-deb https://deb.debian.org/debian sid main contrib non-free
-deb-src https://deb.debian.org/debian sid main contrib non-free
+deb https://deb.debian.org/debian/ bullseye main contrib non-free
+deb-src https://deb.debian.org/debian/ bullseye main contrib non-free
+deb https://security.debian.org/debian-security bullseye-security main contrib non-free
+deb-src https://security.debian.org/debian-security bullseye-security main contrib non-free
+deb https://deb.debian.org/debian/ bullseye-updates main contrib non-free
+deb-src https://deb.debian.org/debian/ bullseye-updates main contrib non-free
 EOF
 echo "################################################################################"
 echo "#              Removing unnecessary software, updating the system              #"
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
 apt update
-apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
+apt purge baobab cheese eog evince evolution file-roller firefox-esr gedit gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-contacts gnome-documents gnome-font-viewer gnome-games gnome-logs gnome-maps gnome-music gnome-shell-extension-prefs gnome-shell-extensions gnome-sound-recorder gnome-todo gnome-tweaks gnome-weather im-config libreoffice* malcontent rhythmbox seahorse shotwell synaptic totem transmission-gtk -y
 apt full-upgrade -y
-apt install neofetch htop git lm-sensors ufw cups locales-all flatpak gnome-software-plugin-flatpak default-jdk adb fastboot poppler-utils gedit-plugins bleachbit metadata-cleaner gnome-boxes tilp2 arduino codeblocks freecad cura inkscape anki chromium -y
+apt install adb bleachbit codeblockscups cura default-jdk fastboot flatpak git gnome-software-plugin-flatpak htop lm-sensors locales-all neofetch poppler-utils tilp2 ufw -y
 if [ "$DATA_DRIVE" = true ]
 then
     apt install syncthing -y
 fi
-if [ "$BACKUP_DRIVE" = true ]
-then
-    apt install deja-dup -y
-fi
 apt autoremove --purge -y
 apt clean
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub com.tutanota.Tutanota org.signal.Signal org.apache.netbeans -y
+flatpak install flathub cc.arduino.arduinoide com.transmissionbt.Transmission com.tutanota.Tutanota fr.romainvigier.MetadataCleaner net.ankiweb.Anki org.apache.netbeans org.chromium.Chromium org.freecadweb.FreeCAD org.gnome.Boxes org.gnome.Calculator org.gnome.Cheese org.gnome.eog org.gnome.Evince org.gnome.FileRoller org.gnome.gedit org.gnome.Logs org.gnome.Rhythmbox3 org.gnome.SoundRecorder org.gnome.Totem org.inkscape.Inkscape org.libreoffice.LibreOffice org.mozilla.firefox org.signal.Signal -y
+if [ "$BACKUP_DRIVE" = true ]
+then
+    flatpak install flathub org.gnome.DejaDup -y
+fi
 echo "################################################################################"
 echo "#                          Configuring the bootloader                          #"
 echo "################################################################################"
@@ -120,8 +124,8 @@ systemctl enable systemd-resolved
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
-mkdir -p /usr/share/arduino/examples/01.Basics/BareMinimum
-wget -O /usr/share/arduino/examples/01.Basics/BareMinimum/BareMinimum.ino https://raw.githubusercontent.com/locxter/arduino-template/main/arduino-template.ino
+mkdir -p /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino/examples/01.Basics/BareMinimum
+wget -O /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino/examples/01.Basics/BareMinimum/BareMinimum.ino https://raw.githubusercontent.com/locxter/arduino-template/main/arduino-template.ino
 if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
@@ -150,7 +154,7 @@ then
     cat << EOF > /home/locxter/.config/autostart/mount-backup-drive.desktop
 [Desktop Entry]
 Type=Application
-Exec=bash -c "if ! test -e /media/locxter/backup; then while ! udisksctl unlock -b $LOCKED_BACKUP_DRIVE --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_BACKUP_DRIVE; while ! test -e /media/locxter/data; do zenity --error --text='Data drive not mounted'; done; deja-dup --backup; fi"
+Exec=bash -c "if ! test -e /media/locxter/backup; then while ! udisksctl unlock -b $LOCKED_BACKUP_DRIVE --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_BACKUP_DRIVE; while ! test -e /media/locxter/data; do zenity --error --text='Data drive not mounted'; done; flatpak run org.gnome.DejaDup --backup; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -159,7 +163,7 @@ EOF
     cat << EOF > /home/locxter/.config/autostart/start-backup.desktop
 [Desktop Entry]
 Type=Application
-Exec=bash -c "if test -e /media/locxter/backup && test -e /media/locxter/data; then deja-dup --backup; fi"
+Exec=bash -c "if test -e /media/locxter/backup && test -e /media/locxter/data; then flatpak run org.gnome.DejaDup --backup; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -173,12 +177,27 @@ email=54595101+locxter@users.noreply.github.com
 [init]
 defaultBranch = main
 EOF
+mkdir -p /home/locxter/.config/codeblocks/UserTemplates/c-template
+wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
+wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.layout https://raw.githubusercontent.com/locxter/c-template/main/c-template.layout
+wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/main.c https://raw.githubusercontent.com/locxter/c-template/main/main.c
+mkdir -p /home/locxter/.config/codeblocks/UserTemplates/cpp-template
+wget -O /home/locxter/.config/codeblocks/UserTemplates/cpp-template/cpp-template.cbp https://raw.githubusercontent.com/locxter/cpp-template/main/cpp-template.cbp
+wget -O /home/locxter/.config/codeblocks/UserTemplates/cpp-template/cpp-template.layout https://raw.githubusercontent.com/locxter/cpp-template/main/cpp-template.layout
+wget -O /home/locxter/.config/codeblocks/UserTemplates/cpp-template/main.cpp https://raw.githubusercontent.com/locxter/cpp-template/main/main.cpp
+mkdir -p /home/locxter/.config/codeblocks/UserTemplates/opencv-template
+wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/main.cpp https://raw.githubusercontent.com/locxter/opencv-template/main/main.cpp
+wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.cbp https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.cbp
+wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.layout https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.layout
 mkdir -p /home/locxter/.local/share/cura
 unzip -o cura-settings.zip -d /home/locxter/.local/share/cura
-mkdir -p /home/locxter/.mozilla/firefox
-sudo -E -u locxter firefox -createProfile "locxter /home/locxter/.mozilla/firefox/locxter"
-unzip -o firefox-profile.zip -d /home/locxter/.mozilla/firefox/locxter
-cat << EOF > /home/locxter/.mozilla/firefox/profiles.ini
+mkdir -p /home/locxter/.netbeans/12.5/config/Templates/Classes
+wget -O /home/locxter/.netbeans/12.5/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
+wget -O /home/locxter/.netbeans/12.5/config/Templates/Classes/Class.java https://raw.githubusercontent.com/locxter/java-template/main/Class.java
+mkdir -p /home/locxter/.var/app/org.mozilla.firefox/.mozilla/firefox
+sudo -E -u locxter firefox -createProfile "locxter /home/locxter/.var/app/org.mozilla.firefox/.mozilla/firefox/locxter"
+unzip -o firefox-profile.zip -d /home/locxter/.var/app/org.mozilla.firefox/.mozilla/firefox/locxter
+cat << EOF > /home/locxter/.var/app/org.mozilla.firefox/.mozilla/firefox/profiles.ini
 [Profile0]
 Name=locxter
 IsRelative=1
@@ -188,8 +207,8 @@ Path=locxter
 StartWithLastProfile=0
 Version=2
 EOF
-mkdir -p /home/locxter/.local/share/rhythmbox
-cat << EOF > /home/locxter/.local/share/rhythmbox/rhythmdb.xml
+mkdir -p /home/locxter/.var/app/org.gnome.Rhythmbox3/data/rhythmbox
+cat << EOF > /home/locxter/.var/app/org.gnome.Rhythmbox3/data/rhythmbox/rhythmdb.xml
 <?xml version="1.0" standalone="yes"?>
 <rhythmdb version="2.0">
   <entry type="iradio">
@@ -218,33 +237,18 @@ cat << EOF > /home/locxter/.local/share/rhythmbox/rhythmdb.xml
   </entry>
 </rhythmdb>
 EOF
-mkdir -p /home/locxter/.config/codeblocks/UserTemplates/c-template
-wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
-wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/c-template.layout https://raw.githubusercontent.com/locxter/c-template/main/c-template.layout
-wget -O /home/locxter/.config/codeblocks/UserTemplates/c-template/main.c https://raw.githubusercontent.com/locxter/c-template/main/main.c
-mkdir -p /home/locxter/.config/codeblocks/UserTemplates/cpp-template
-wget -O /home/locxter/.config/codeblocks/UserTemplates/cpp-template/cpp-template.cbp https://raw.githubusercontent.com/locxter/cpp-template/main/cpp-template.cbp
-wget -O /home/locxter/.config/codeblocks/UserTemplates/cpp-template/cpp-template.layout https://raw.githubusercontent.com/locxter/cpp-template/main/cpp-template.layout
-wget -O /home/locxter/.config/codeblocks/UserTemplates/cpp-template/main.cpp https://raw.githubusercontent.com/locxter/cpp-template/main/main.cpp
-mkdir -p /home/locxter/.config/codeblocks/UserTemplates/opencv-template
-wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/main.cpp https://raw.githubusercontent.com/locxter/opencv-template/main/main.cpp
-wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.cbp https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.cbp
-wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.layout https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.layout
-mkdir -p /home/locxter/.netbeans/12.5/config/Templates/Classes
-wget -O /home/locxter/.netbeans/12.5/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
-wget -O /home/locxter/.netbeans/12.5/config/Templates/Classes/Class.java https://raw.githubusercontent.com/locxter/java-template/main/Class.java
-mkdir -p /home/locxter/.config/inkscape/templates
-wget -O /home/locxter/.config/inkscape/templates/default.svg https://raw.githubusercontent.com/locxter/inkscape-template/main/default.svg
-mkdir -p /home/locxter/.config/libreoffice/4/user/template
-wget -O /home/locxter/.config/libreoffice/4/user/template/document-template.ott https://raw.githubusercontent.com/locxter/document-template/main/document-template.ott
-wget -O /home/locxter/.config/libreoffice/4/user/template/report-template.ott https://raw.githubusercontent.com/locxter/report-template/main/report-template.ott
-wget -O /home/locxter/.config/libreoffice/4/user/template/presentation-template.otp https://raw.githubusercontent.com/locxter/presentation-template/main/presentation-template.otp
-wget -O /home/locxter/.config/libreoffice/4/user/template/spreadsheet-template.ots https://raw.githubusercontent.com/locxter/spreadsheet-template/main/spreadsheet-template.ots
-wget -O /home/locxter/.config/libreoffice/4/user/template/timetable-template.ott https://raw.githubusercontent.com/locxter/timetable-template/main/timetable-template.ott
-mkdir -p /home/locxter/.config/libreoffice/4/user/autocorr
-cp autocorrect-de.dat /home/locxter/.config/libreoffice/4/user/autocorr/acor_de-DE.dat
-mkdir -p /home/locxter/.local/share/gtksourceview-4/language-specs
-wget -O /home/locxter/.local/share/gtksourceview-4/language-specs/arduino.lang https://raw.githubusercontent.com/kaochen/GtkSourceView-Arduino/master/arduino.lang
+mkdir -p /home/locxter/.var/app/org.gnome.gedit/data/gtksourceview-4/language-specs
+wget -O /home/locxter/.var/app/org.gnome.gedit/data/gtksourceview-4/language-specs/arduino.lang https://raw.githubusercontent.com/kaochen/GtkSourceView-Arduino/master/arduino.lang
+mkdir -p /home/locxter/.var/app/org.inkscape.Inkscape/config/inkscape/templates
+wget -O /home/locxter/.var/app/org.inkscape.Inkscape/config/inkscape/templates/default.svg https://raw.githubusercontent.com/locxter/inkscape-template/main/default.svg
+mkdir -p /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/template
+wget -O /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/template/document-template.ott https://raw.githubusercontent.com/locxter/document-template/main/document-template.ott
+wget -O /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/template/report-template.ott https://raw.githubusercontent.com/locxter/report-template/main/report-template.ott
+wget -O /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/template/presentation-template.otp https://raw.githubusercontent.com/locxter/presentation-template/main/presentation-template.otp
+wget -O /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/template/spreadsheet-template.ots https://raw.githubusercontent.com/locxter/spreadsheet-template/main/spreadsheet-template.ots
+wget -O /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/template/timetable-template.ott https://raw.githubusercontent.com/locxter/timetable-template/main/timetable-template.ott
+mkdir -p /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/autocorr
+cp autocorrect-de.dat /home/locxter/.var/app/org.libreoffice.LibreOffice/config/libreoffice/4/user/autocorr/acor_de-DE.dat
 chown -R locxter:locxter /home/locxter
 echo "################################################################################"
 echo "#                          Setting my profile picture                          #"
@@ -253,7 +257,7 @@ cp profile-picture.jpeg /home/locxter/.face
 echo "################################################################################"
 echo "#              Adding apps to the dash and resorting the app grid              #"
 echo "################################################################################"
-sudo -E -u locxter gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'com.tutanota.Tutanota.desktop', 'org.signal.Signal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
+sudo -E -u locxter gsettings set org.gnome.shell favorite-apps "['org.mozilla.firefox.desktop', 'com.tutanota.Tutanota.desktop', 'org.signal.Signal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 sudo -E -u locxter gsettings set org.gnome.desktop.app-folders folder-children "['']"
 sudo -E -u locxter gsettings set org.gnome.shell app-picker-layout "[]"
 echo "################################################################################"
