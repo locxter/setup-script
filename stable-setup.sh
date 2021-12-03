@@ -60,7 +60,7 @@ echo "##########################################################################
 apt update
 apt purge baobab cheese eog evince evolution file-roller firefox-esr gedit gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-contacts gnome-documents gnome-font-viewer gnome-games gnome-logs gnome-maps gnome-music gnome-shell-extension-prefs gnome-shell-extensions gnome-sound-recorder gnome-todo gnome-tweaks gnome-weather im-config libreoffice* malcontent rhythmbox seahorse shotwell synaptic totem transmission-gtk -y
 apt full-upgrade -y
-apt install adb bleachbit codeblockscups cura default-jdk fastboot flatpak git gnome-software-plugin-flatpak htop lm-sensors locales-all neofetch poppler-utils tilp2 ufw -y
+apt install adb bleachbit codeblocks cups cura default-jdk fastboot flatpak git gnome-software-plugin-flatpak htop lm-sensors locales-all neofetch poppler-utils tilp2 ufw -y
 if [ "$DATA_DRIVE" = true ]
 then
     apt install syncthing -y
