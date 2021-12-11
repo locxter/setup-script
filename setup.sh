@@ -43,20 +43,13 @@ else
     BACKUP_DRIVE=false
 fi
 echo "################################################################################"
-echo "#                        Modifying the apt repositories                        #"
-echo "################################################################################"
-cat << EOF > /etc/apt/sources.list
-deb https://deb.debian.org/debian sid main contrib non-free
-deb-src https://deb.debian.org/debian sid main contrib non-free
-EOF
-echo "################################################################################"
 echo "#              Removing unnecessary software, updating the system              #"
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
 apt update
-apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
+apt purge sticky gnome-calendar drawing pix hexchat seahorse onboard warpinator thunderbird mintbackup timeshift mintwelcome -y
 apt full-upgrade -y
-apt install neofetch htop git lm-sensors ufw cups locales-all flatpak gnome-software-plugin-flatpak default-jdk adb fastboot poppler-utils gedit-plugins bleachbit metadata-cleaner gnome-boxes tilp2 arduino codeblocks freecad cura inkscape anki chromium -y
+apt install git g++ default-jdk android-sdk-platform-tools-common bleachbit gnome-boxes tilp2 codeblocks cura inkscape anki chromium -y
 if [ "$DATA_DRIVE" = true ]
 then
     apt install syncthing -y
@@ -68,16 +61,17 @@ fi
 apt autoremove --purge -y
 apt clean
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub com.tutanota.Tutanota org.signal.Signal org.apache.netbeans -y
+flatpak install flathub com.tutanota.Tutanota org.signal.Signal org.apache.netbeans cc.arduino.arduinoide fr.romainvigier.MetadataCleaner org.freecadweb.FreeCAD -y
 echo "################################################################################"
 echo "#                          Configuring the bootloader                          #"
 echo "################################################################################"
 mkdir -p /etc/default
 cat << EOF > /etc/default/grub
 GRUB_DEFAULT=0
+GRUB_TIMEOUT_STYLE=hidden
 GRUB_TIMEOUT=0
 GRUB_DISTRIBUTOR="Debian"
-GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3"
 EOF
 update-grub
 echo "################################################################################"
@@ -88,7 +82,6 @@ if [ "$DATA_DRIVE" = true ]
 then
     ufw allow syncthing
 fi
-ufw allow transmission
 echo "################################################################################"
 echo "#                Configuring DNS over TLS and mac randomization                #"
 echo "################################################################################"
@@ -105,23 +98,19 @@ wifi.scan-rand-mac-address=yes
 ethernet.cloned-mac-address=stable
 wifi.cloned-mac-address=stable
 EOF
-mkdir -p /etc
-cat << EOF > /etc/resolv.conf
-nameserver 127.0.0.53
-EOF
 mkdir -p /etc/systemd
 cat << EOF > /etc/systemd/resolved.conf
 [Resolve]
 DNS=176.9.93.198#dnsforge.de
 DNS=176.9.1.117#dnsforge.de
-DNSOverTLS=yes
+DNSOverTLS=opportunistic
 EOF
 systemctl enable systemd-resolved
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
-mkdir -p /usr/share/arduino/examples/01.Basics/BareMinimum
-wget -O /usr/share/arduino/examples/01.Basics/BareMinimum/BareMinimum.ino https://raw.githubusercontent.com/locxter/arduino-template/main/arduino-template.ino
+mkdir -p /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino/examples/01.Basics/BareMinimum
+wget -O /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino/examples/01.Basics/BareMinimum/BareMinimum.ino https://raw.githubusercontent.com/locxter/arduino-template/main/arduino-template.ino
 if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
@@ -174,7 +163,7 @@ email=54595101+locxter@users.noreply.github.com
 defaultBranch = main
 EOF
 mkdir -p /home/locxter/.local/share/cura
-unzip -o cura-settings.zip -d /home/locxter/.local/share/cura
+unzip -o cura-config.zip -d /home/locxter/.local/share/cura
 mkdir -p /home/locxter/.mozilla/firefox
 sudo -E -u locxter firefox -createProfile "locxter /home/locxter/.mozilla/firefox/locxter"
 unzip -o firefox-profile.zip -d /home/locxter/.mozilla/firefox/locxter
@@ -230,9 +219,9 @@ mkdir -p /home/locxter/.config/codeblocks/UserTemplates/opencv-template
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/main.cpp https://raw.githubusercontent.com/locxter/opencv-template/main/main.cpp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.cbp https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.cbp
 wget -O /home/locxter/.config/codeblocks/UserTemplates/opencv-template/opencv-template.layout https://raw.githubusercontent.com/locxter/opencv-template/main/opencv-template.layout
-mkdir -p /home/locxter/.netbeans/12.5/config/Templates/Classes
-wget -O /home/locxter/.netbeans/12.5/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
-wget -O /home/locxter/.netbeans/12.5/config/Templates/Classes/Class.java https://raw.githubusercontent.com/locxter/java-template/main/Class.java
+mkdir -p /home/locxter/.netbeans/12.6/config/Templates/Classes
+wget -O /home/locxter/.netbeans/12.6/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
+wget -O /home/locxter/.netbeans/12.6/config/Templates/Classes/Class.java https://raw.githubusercontent.com/locxter/java-template/main/Class.java
 mkdir -p /home/locxter/.config/inkscape/templates
 wget -O /home/locxter/.config/inkscape/templates/default.svg https://raw.githubusercontent.com/locxter/inkscape-template/main/default.svg
 mkdir -p /home/locxter/.config/libreoffice/4/user/template
@@ -250,12 +239,6 @@ echo "##########################################################################
 echo "#                          Setting my profile picture                          #"
 echo "################################################################################"
 cp profile-picture.jpeg /home/locxter/.face
-echo "################################################################################"
-echo "#              Adding apps to the dash and resorting the app grid              #"
-echo "################################################################################"
-sudo -E -u locxter gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'com.tutanota.Tutanota.desktop', 'org.signal.Signal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
-sudo -E -u locxter gsettings set org.gnome.desktop.app-folders folder-children "['']"
-sudo -E -u locxter gsettings set org.gnome.shell app-picker-layout "[]"
 echo "################################################################################"
 echo "#        Finished the setup, please check the console output for errors        #"
 echo "#             that might occurred and reboot the system afterwards             #"
