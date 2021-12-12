@@ -59,7 +59,7 @@ then
     apt install deja-dup -y
 fi
 apt autoremove --purge -y
-apt clean
+apt autoclean
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak install flathub com.tutanota.Tutanota org.signal.Signal org.apache.netbeans cc.arduino.arduinoide fr.romainvigier.MetadataCleaner org.freecadweb.FreeCAD -y
 echo "################################################################################"
