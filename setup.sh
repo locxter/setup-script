@@ -113,6 +113,8 @@ mkdir -p /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino
 wget -O /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino/examples/01.Basics/BareMinimum/BareMinimum.ino https://raw.githubusercontent.com/locxter/arduino-template/main/arduino-template.ino
 usermod -a -G dialout locxter
 usermod -a -G tty locxter
+flatpak override cc.arduino.arduinoide --filesystem=host
+flatpak override org.signal.Signal --filesystem=host
 if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
