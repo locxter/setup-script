@@ -70,7 +70,7 @@ cat << EOF > /etc/default/grub
 GRUB_DEFAULT=0
 GRUB_TIMEOUT_STYLE=hidden
 GRUB_TIMEOUT=0
-GRUB_DISTRIBUTOR="Debian"
+GRUB_DISTRIBUTOR="Linux Mint"
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3"
 EOF
 update-grub
@@ -111,6 +111,8 @@ echo "#                       Configuring scripts and programs                  
 echo "################################################################################"
 mkdir -p /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino/examples/01.Basics/BareMinimum
 wget -O /var/lib/flatpak/app/cc.arduino.arduinoide/current/active/files/Arduino/examples/01.Basics/BareMinimum/BareMinimum.ino https://raw.githubusercontent.com/locxter/arduino-template/main/arduino-template.ino
+usermod -a -G dialout locxter
+usermod -a -G tty locxter
 if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p /home/locxter/.config/autostart
