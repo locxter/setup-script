@@ -53,7 +53,7 @@ then
     sudo apt purge deja-dup -y
 fi
 sudo apt full-upgrade -y
-sudo apt install git gcc g++ default-jdk lm-sensors neofetch adb fastboot gedit-plugins ubuntu-restricted-extras libserialport0 patchelf bleachbit metadata-cleaner gnome-boxes tilp2 codeblocks cura inkscape anki freecad arduino -y
+sudo apt install git gcc g++ openjdk-17-jdk lm-sensors neofetch adb fastboot gedit-plugins ubuntu-restricted-extras libserialport0 patchelf bleachbit metadata-cleaner gnome-boxes tilp2 codeblocks cura inkscape anki freecad arduino -y
 if [ "$DATA_DRIVE" = true ]
 then
     sudo apt install syncthing -y
@@ -165,9 +165,9 @@ Path=locxter
 StartWithLastProfile=0
 Version=2
 EOF
-mkdir -p ~/snap/netbeans/current/config/Templates/Classes
-wget -O ~/snap/netbeans/current/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
-wget -O ~/snap/netbeans/current/config/Templates/Classes/Class.java https://raw.githubusercontent.com/locxter/java-template/main/Class.java
+mkdir -p ~/snap/netbeans/52/config/Templates/Classes
+wget -O ~/snap/netbeans/52/config/Templates/Classes/Main.java https://raw.githubusercontent.com/locxter/java-template/main/Main.java
+wget -O ~/snap/netbeans/52/config/Templates/Classes/Class.java https://raw.githubusercontent.com/locxter/java-template/main/Class.java
 mkdir -p ~/.config/codeblocks/UserTemplates/c-template
 wget -O ~/.config/codeblocks/UserTemplates/c-template/c-template.cbp https://raw.githubusercontent.com/locxter/c-template/main/c-template.cbp
 wget -O ~/.config/codeblocks/UserTemplates/c-template/c-template.layout https://raw.githubusercontent.com/locxter/c-template/main/c-template.layout
