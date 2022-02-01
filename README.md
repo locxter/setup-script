@@ -1,4 +1,4 @@
-# Software setup
+# Setup script
 
 ## Overview
 
