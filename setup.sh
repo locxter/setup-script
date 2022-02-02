@@ -53,7 +53,7 @@ then
     sudo apt purge deja-dup -y
 fi
 sudo apt full-upgrade -y
-sudo apt install git gcc g++ gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch libserialport0 patchelf bleachbit metadata-cleaner gnome-boxes tilp2 cura inkscape anki freecad arduino -y
+sudo apt install git gcc g++ gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot flatpak gnome-software-plugin-flatpak lm-sensors neofetch libserialport0 patchelf bleachbit metadata-cleaner gnome-boxes tilp2 cura inkscape anki freecad arduino -y
 if [ "$DATA_DRIVE" = true ]
 then
     sudo apt install syncthing -y
@@ -62,6 +62,8 @@ sudo apt autoremove --purge -y
 sudo apt autoclean
 sudo snap install chromium signal-desktop
 sudo snap install codium --classic
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo flatpak install flathub com.tutanota.Tutanota -y
 echo "################################################################################"
 echo "#                           Configuring the firewall                           #"
 echo "################################################################################"
@@ -150,6 +152,7 @@ defaultBranch = main
 EOF
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
+codium --install-extension eg2.vscode-npm-script --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.live-server --install-extension redhat.java --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vsciot-vscode.vscode-arduino --install-extension vscjava.vscode-java-debug --install-extension vscjava.vscode-java-dependency --install-extension vscjava.vscode-java-test --install-extension vscjava.vscode-maven
 mkdir -p ~/.local/share/cura/4.8
 unzip -o cura-config.zip -d ~/.local/share/cura/4.8
 mkdir -p ~/snap/firefox/common/.mozilla/firefox
@@ -168,7 +171,6 @@ EOF
 mkdir -p ~/.config/inkscape/templates
 cp inkscape-template.svg ~/.config/inkscape/templates/default.svg
 mkdir -p ~/.config/libreoffice/4/user/template
-
 wget -O ~/.config/libreoffice/4/user/template/document-template.ott https://raw.githubusercontent.com/locxter/libreoffice-templates/main/document-template.ott
 wget -O ~/.config/libreoffice/4/user/template/report-template.ott https://raw.githubusercontent.com/locxter/libreoffice-templates/main/report-template.ott
 wget -O ~/.config/libreoffice/4/user/template/presentation-template.otp https://raw.githubusercontent.com/locxter/libreoffice-templates/main/presentation-template.otp
@@ -213,7 +215,7 @@ cp profile-picture.jpeg ~/.face
 echo "################################################################################"
 echo "#              Adding apps to the dash and resorting the app grid              #"
 echo "################################################################################"
-gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'signal-desktop_signal-desktop.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
+gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'com.tutanota.Tutanota.desktop', 'signal-desktop_signal-desktop.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.desktop.app-folders folder-children "['']"
 gsettings set org.gnome.shell app-picker-layout "[]"
 echo "################################################################################"
