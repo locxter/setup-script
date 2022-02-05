@@ -53,7 +53,7 @@ then
     sudo apt purge deja-dup -y
 fi
 sudo apt full-upgrade -y
-sudo apt install git gcc g++ gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot flatpak gnome-software-plugin-flatpak lm-sensors neofetch libserialport0 patchelf bleachbit metadata-cleaner gnome-boxes tilp2 cura inkscape anki freecad arduino -y
+sudo apt install git gcc g++ gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot flatpak lm-sensors neofetch libserialport0 patchelf bleachbit metadata-cleaner gnome-boxes tilp2 cura inkscape anki freecad arduino -y
 if [ "$DATA_DRIVE" = true ]
 then
     sudo apt install syncthing -y
