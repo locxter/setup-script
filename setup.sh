@@ -143,6 +143,13 @@ X-GNOME-Autostart-enabled=true
 Name=Start backup
 EOF
 fi
+mkdir -p ~/.local/share/nautilus/scripts
+tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << EOF
+#!/bin/bash
+FILENAME=$(basename $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS .pdf)
+pdftoppm -png $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS $FILENAME
+EOF
+chmod +x ~/.local/share/nautilus/scripts/pdf-to-png.sh
 tee ~/.gitconfig << EOF
 [user]
 name=locxter
@@ -213,12 +220,20 @@ echo "#                          Setting my profile picture                     
 echo "################################################################################"
 cp profile-picture.jpeg ~/.face
 echo "################################################################################"
-echo "#              Adding apps to the dash and resorting the app grid              #"
+echo "#                      Tweaking the desktop to my likings                      #"
 echo "################################################################################"
 gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'com.tutanota.Tutanota.desktop', 'signal-desktop_signal-desktop.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.desktop.app-folders folder-children "['']"
 gsettings set org.gnome.shell app-picker-layout "[]"
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-position "BOTTOM"
+gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-apps-at-top true
 echo "################################################################################"
 echo "#        Finished the setup, please check the console output for errors        #"
 echo "#             that might occurred and reboot the system afterwards             #"
 echo "################################################################################"
+                                            
+                                            
