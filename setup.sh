@@ -46,28 +46,40 @@ echo "##########################################################################
 echo "#              Removing unnecessary software, updating the system              #"
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
+wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+echo "deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
 sudo apt update
-sudo apt purge aisleriot gnome-calendar seahorse thunderbird gnome-mahjongg gnome-mines remmina shotwell gnome-sudoku gnome-todo baobab cheese -y
-if [ "$BACKUP_DRIVE" = false ]
-then
-    sudo apt purge deja-dup -y
-fi
+sudo apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
 sudo apt full-upgrade -y
-sudo apt install git gcc g++ gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot flatpak lm-sensors neofetch libserialport0 patchelf bleachbit metadata-cleaner gnome-boxes tilp2 cura inkscape anki freecad arduino -y
+sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot flatpak gnome-software-plugin-flatpak lm-sensors neofetch mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki freecad arduino chromium codium -y
 if [ "$DATA_DRIVE" = true ]
 then
     sudo apt install syncthing -y
 fi
+if [ "$BACKUP_DRIVE" = true ]
+then
+    sudo apt install deja-dup -y
+fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
-sudo snap install chromium signal-desktop
-sudo snap install codium --classic
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install flathub com.tutanota.Tutanota -y
+sudo flatpak install flathub com.tutanota.Tutanota org.signal.Signal -y
+echo "################################################################################"
+echo "#                          Configuring the bootloader                          #"
+echo "################################################################################"
+sudo mkdir -p /etc/default
+sudo tee /etc/default/grub << EOF
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=0
+GRUB_DISTRIBUTOR="Debian"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3"
+EOF
+sudo update-grub
 echo "################################################################################"
 echo "#                           Configuring the firewall                           #"
 echo "################################################################################"
 sudo ufw enable
+sudo ufw allow transmission
 if [ "$DATA_DRIVE" = true ]
 then
     sudo ufw allow syncthing
@@ -88,17 +100,20 @@ wifi.scan-rand-mac-address=yes
 ethernet.cloned-mac-address=stable
 wifi.cloned-mac-address=stable
 EOF
+sudo mkdir -p /etc
+sudo tee /etc/resolv.conf << EOF
+nameserver 127.0.0.53
+EOF
 sudo mkdir -p /etc/systemd
 sudo tee /etc/systemd/resolved.conf << EOF
 [Resolve]
-DNS=176.9.93.198#dnsforge.de
-DNS=176.9.1.117#dnsforge.de
+DNS=45.91.92.121#dot-ch.blahdns.com
 DNSOverTLS=yes
 EOF
+sudo systemctl enable systemd-resolved
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
-sudo patchelf --add-needed libserialport.so.0 /usr/lib/x86_64-linux-gnu/liblistSerialsj.so.1.4.0
 if [ "$DATA_DRIVE" = true ]
 then
     mkdir -p ~/.config/autostart
@@ -144,12 +159,30 @@ Name=Start backup
 EOF
 fi
 mkdir -p ~/.local/share/nautilus/scripts
-tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << EOF
+tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << "EOF"
 #!/bin/bash
-FILENAME=$(basename $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS .pdf)
-pdftoppm -png $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS $FILENAME
+for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+do
+    pdftoppm -png $FILE $(basename $FILE .pdf)
+done
 EOF
 chmod +x ~/.local/share/nautilus/scripts/pdf-to-png.sh
+tee ~/.local/share/nautilus/scripts/remove-metadata.sh << "EOF"
+#!/bin/bash
+for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+do
+    mat2 $FILE
+done
+EOF
+chmod +x ~/.local/share/nautilus/scripts/remove-metadata.sh
+tee ~/.local/share/nautilus/scripts/remove-metadata-lightweight.sh << "EOF"
+#!/bin/bash
+for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+do
+    mat2 --lightweight $FILE
+done
+EOF
+chmod +x ~/.local/share/nautilus/scripts/remove-metadata-lightweight.sh
 tee ~/.gitconfig << EOF
 [user]
 name=locxter
@@ -162,10 +195,10 @@ unzip -o vscodium-config.zip -d ~/.config/VSCodium
 codium --install-extension eg2.vscode-npm-script --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.live-server --install-extension redhat.java --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vsciot-vscode.vscode-arduino --install-extension vscjava.vscode-java-debug --install-extension vscjava.vscode-java-dependency --install-extension vscjava.vscode-java-test --install-extension vscjava.vscode-maven
 mkdir -p ~/.local/share/cura/4.8
 unzip -o cura-config.zip -d ~/.local/share/cura/4.8
-mkdir -p ~/snap/firefox/common/.mozilla/firefox
-firefox -createProfile "locxter /home/locxter/snap/firefox/common/.mozilla/firefox/locxter"
-unzip -o firefox-profile.zip -d ~/snap/firefox/common/.mozilla/firefox/locxter
-tee ~/snap/firefox/common/.mozilla/firefox/profiles.ini << EOF
+mkdir -p ~/.mozilla/firefox
+firefox -createProfile "locxter /home/locxter/.mozilla/firefox/locxter"
+unzip -o firefox-profile.zip -d ~/.mozilla/firefox/locxter
+tee ~/.mozilla/firefox/profiles.ini << EOF
 [Profile0]
 Name=locxter
 IsRelative=1
@@ -190,27 +223,33 @@ tee ~/.local/share/rhythmbox/rhythmdb.xml << EOF
 <?xml version="1.0" standalone="yes"?>
 <rhythmdb version="2.0">
   <entry type="iradio">
-    <title>NDR N-Joy AAC 48kHz</title>
+    <title>NDR N-JOY</title>
+    <genre>NDR</genre>
     <location>http://www.ndr.de/resources/metadaten/audio/aac/n-joy.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Club</title>
+    <genre>NDR</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop5.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Morningshow</title>
+    <genre>NDR</genre>
     <location>http://www.ndr.de/resources/metadaten/audio/m3u/ndrloop27.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Pop</title>
+    <genre>NDR</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop29.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Soundfiles Hip-Hop</title>
+    <genre>NDR</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop6.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Weltweit</title>
+    <genre>NDR</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop28.m3u</location>
   </entry>
 </rhythmdb>
@@ -222,18 +261,11 @@ cp profile-picture.jpeg ~/.face
 echo "################################################################################"
 echo "#                      Tweaking the desktop to my likings                      #"
 echo "################################################################################"
-gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'com.tutanota.Tutanota.desktop', 'signal-desktop_signal-desktop.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
+gsettings set org.gnome.mutter center-new-windows true
+gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'com.tutanota.Tutanota.desktop', 'org.signal.Signal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.desktop.app-folders folder-children "['']"
 gsettings set org.gnome.shell app-picker-layout "[]"
-gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
-gsettings set org.gnome.shell.extensions.dash-to-dock dock-position "BOTTOM"
-gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
-gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
-gsettings set org.gnome.shell.extensions.dash-to-dock show-apps-at-top true
 echo "################################################################################"
 echo "#        Finished the setup, please check the console output for errors        #"
 echo "#             that might occurred and reboot the system afterwards             #"
 echo "################################################################################"
-                                            
-                                            
