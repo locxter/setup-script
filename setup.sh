@@ -87,6 +87,7 @@ fi
 echo "################################################################################"
 echo "#                Configuring DNS over TLS and mac randomization                #"
 echo "################################################################################"
+sudo systemctl stop NetworkManager
 sudo mkdir -p /etc/NetworkManager/conf.d
 sudo tee /etc/NetworkManager/conf.d/no-dns.conf << EOF
 [main]
@@ -107,10 +108,14 @@ EOF
 sudo mkdir -p /etc/systemd
 sudo tee /etc/systemd/resolved.conf << EOF
 [Resolve]
-DNS=45.91.92.121#dot-ch.blahdns.com
+DNS=176.9.93.198#dnsforge.de
+DNS=176.9.1.117#dnsforge.de
 DNSOverTLS=yes
 EOF
 sudo systemctl enable systemd-resolved
+sudo systemctl start NetworkManager
+sudo systemctl start systemd-resolved
+sleep 15
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
@@ -262,6 +267,7 @@ echo "##########################################################################
 echo "#                      Tweaking the desktop to my likings                      #"
 echo "################################################################################"
 gsettings set org.gnome.mutter center-new-windows true
+gsettings set org.gnome.desktop.interface enable-hot-corners false
 gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'com.tutanota.Tutanota.desktop', 'org.signal.Signal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.desktop.app-folders folder-children "['']"
 gsettings set org.gnome.shell app-picker-layout "[]"
