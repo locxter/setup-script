@@ -197,7 +197,7 @@ defaultBranch = main
 EOF
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
-codium --install-extension eg2.vscode-npm-script --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.live-server --install-extension redhat.java --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vsciot-vscode.vscode-arduino --install-extension vscjava.vscode-java-debug --install-extension vscjava.vscode-java-dependency --install-extension vscjava.vscode-java-test --install-extension vscjava.vscode-maven
+codium --install-extension eg2.vscode-npm-script --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension svelte.svelte-vscode --install-extension redhat.java --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vsciot-vscode.vscode-arduino --install-extension vscjava.vscode-java-debug --install-extension vscjava.vscode-java-dependency --install-extension vscjava.vscode-java-test --install-extension vscjava.vscode-maven
 mkdir -p ~/.local/share/cura/4.8
 unzip -o cura-config.zip -d ~/.local/share/cura/4.8
 mkdir -p ~/.mozilla/firefox
