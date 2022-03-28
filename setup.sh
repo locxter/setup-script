@@ -47,11 +47,13 @@ echo "#              Removing unnecessary software, updating the system         
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
-echo "deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
+echo "deb [signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg] https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
+wget -qO - https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor | sudo dd of=/usr/share/keyrings/signal-desktop-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-xenial.list
 sudo apt update
 sudo apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
 sudo apt full-upgrade -y
-sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot flatpak gnome-software-plugin-flatpak lm-sensors neofetch mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki freecad arduino chromium codium -y
+sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki freecad arduino chromium codium signal-desktop -y
 if [ "$DATA_DRIVE" = true ]
 then
     sudo apt install syncthing -y
@@ -62,8 +64,9 @@ then
 fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install flathub com.tutanota.Tutanota org.signal.Signal -y
+mkdir -p ~/Applications
+wget -O ~/Applications/tutanota-desktop-linux.AppImage https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage
+chmod +x ~/Applications/tutanota-desktop-linux.AppImage
 echo "################################################################################"
 echo "#                          Configuring the bootloader                          #"
 echo "################################################################################"
@@ -268,7 +271,7 @@ echo "#                      Tweaking the desktop to my likings                 
 echo "################################################################################"
 gsettings set org.gnome.mutter center-new-windows true
 gsettings set org.gnome.desktop.interface enable-hot-corners false
-gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'com.tutanota.Tutanota.desktop', 'org.signal.Signal.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
+gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'tutanota-desktop.desktop', 'signal-desktop.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.desktop.app-folders folder-children "['']"
 gsettings set org.gnome.shell app-picker-layout "[]"
 echo "################################################################################"
