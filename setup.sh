@@ -53,7 +53,7 @@ echo "deb [signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://upd
 sudo apt update
 sudo apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
 sudo apt full-upgrade -y
-sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki freecad arduino chromium codium signal-desktop -y
+sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop -y
 if [ "$DATA_DRIVE" = true ]
 then
     sudo apt install syncthing -y
