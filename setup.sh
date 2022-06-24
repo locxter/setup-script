@@ -233,32 +233,32 @@ tee ~/.local/share/rhythmbox/rhythmdb.xml << EOF
 <rhythmdb version="2.0">
   <entry type="iradio">
     <title>NDR N-JOY</title>
-    <genre>NDR</genre>
+    <genre>Unknown</genre>
     <location>http://www.ndr.de/resources/metadaten/audio/aac/n-joy.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Club</title>
-    <genre>NDR</genre>
+    <genre>Unknown</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop5.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Morningshow</title>
-    <genre>NDR</genre>
+    <genre>Unknown</genre>
     <location>http://www.ndr.de/resources/metadaten/audio/m3u/ndrloop27.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Pop</title>
-    <genre>NDR</genre>
+    <genre>Unknown</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop29.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Soundfiles Hip-Hop</title>
-    <genre>NDR</genre>
+    <genre>Unknown</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop6.m3u</location>
   </entry>
   <entry type="iradio">
     <title>NDR N-JOY Weltweit</title>
-    <genre>NDR</genre>
+    <genre>Unknown</genre>
     <location>https://www.ndr.de/resources/metadaten/audio_ssl/m3u/ndrloop28.m3u</location>
   </entry>
 </rhythmdb>
