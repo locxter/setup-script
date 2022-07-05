@@ -167,6 +167,11 @@ X-GNOME-Autostart-enabled=true
 Name=Start backup
 EOF
 fi
+sudo mkdir -p /etc/minicom
+sudo tee /etc/minicom/minirc.dfl << EOF
+pu port             
+pu rtscts           No
+EOF
 mkdir -p ~/.local/share/nautilus/scripts
 tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << "EOF"
 #!/bin/bash
