@@ -272,10 +272,12 @@ echo "#                      Tweaking the desktop to my likings                 
 echo "################################################################################"
 gsettings set org.gnome.mutter center-new-windows true
 gsettings set org.gnome.desktop.interface enable-hot-corners false
+gsettings set org.gnome.mutter workspaces-only-on-primary false
 gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
 gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "[]"
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>Tab', '<Alt>Tab']"
 gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
+gsettings set org.gnome.shell.window-switcher current-workspace-only false
 gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'tutanota-desktop.desktop', 'signal-desktop.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.desktop.app-folders folder-children "['']"
 gsettings set org.gnome.shell app-picker-layout "[]"
