@@ -171,6 +171,7 @@ sudo mkdir -p /etc/minicom
 sudo tee /etc/minicom/minirc.dfl << EOF
 pu port             
 pu rtscts           No
+pu addcarreturn     Yes
 EOF
 mkdir -p ~/.local/share/nautilus/scripts
 tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << "EOF"
