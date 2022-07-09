@@ -171,6 +171,8 @@ sudo mkdir -p /etc/minicom
 sudo tee /etc/minicom/minirc.dfl << EOF
 pu port             
 pu rtscts           No
+pu logconn          No 
+pu logxfer          No 
 pu addcarreturn     Yes
 EOF
 mkdir -p ~/.local/share/nautilus/scripts
