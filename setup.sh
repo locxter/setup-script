@@ -53,7 +53,7 @@ echo "deb [signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://upd
 sudo apt update
 sudo apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
 sudo apt full-upgrade -y
-sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch minicom mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop -y
+sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch minicom curl mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop -y
 if [ "$DATA_DRIVE" = true ]
 then
     sudo apt install syncthing -y
@@ -209,7 +209,7 @@ defaultBranch = main
 EOF
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
-codium --install-extension vsciot-vscode.vscode-arduino --install-extension ms-vscode.cpptools --install-extension twxs.cmake --install-extension ms-vscode.cmake-tools --install-extension vscjava.vscode-java-debug --install-extension redhat.java --install-extension vscjava.vscode-maven --install-extension eg2.vscode-npm-script --install-extension vscjava.vscode-java-dependency --install-extension Tyriar.sort-lines --install-extension vscjava.vscode-java-test
+codium --install-extension vsciot-vscode.vscode-arduino --install-extension ms-vscode.cpptools --install-extension twxs.cmake --install-extension ms-vscode.cmake-tools --install-extension vscjava.vscode-java-debug --install-extension redhat.java --install-extension vscjava.vscode-maven --install-extension eg2.vscode-npm-script --install-extension vscjava.vscode-java-dependency --install-extension Tyriar.sort-lines --install-extension vscjava.vscode-java-test --install-extension rangav.vscode-thunder-client
 mkdir -p ~/.local/share/cura/4.8
 unzip -o cura-config.zip -d ~/.local/share/cura/4.8
 mkdir -p ~/.mozilla/firefox
