@@ -6,7 +6,7 @@ echo "##########################################################################
 echo "#          Add data drive scripts and programs to this computer?[y/N]          #"
 echo "################################################################################"
 read REPLY
-if [[ $REPLY == [Yy]* ]]
+if [[ $REPLY =~ [Yy]* ]]
 then
     DATA_DRIVE=true
     echo "################################################################################"
@@ -26,7 +26,7 @@ echo "##########################################################################
 echo "#         Add backup drive scripts and programs to this computer?[y/N]         #"
 echo "################################################################################"
 read REPLY
-if [[ $REPLY == [Yy]* ]]
+if [[ $REPLY =~ [Yy]* ]]
 then
     BACKUP_DRIVE=true
     echo "################################################################################"
@@ -54,11 +54,11 @@ sudo apt update
 sudo apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
 sudo apt full-upgrade -y
 sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch minicom curl mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop -y
-if [ "$DATA_DRIVE" = true ]
+if $DATA_DRIVE
 then
     sudo apt install syncthing -y
 fi
-if [ "$BACKUP_DRIVE" = true ]
+if $BACKUP_DRIVE
 then
     sudo apt install deja-dup -y
 fi
@@ -84,7 +84,7 @@ echo "#                           Configuring the firewall                      
 echo "################################################################################"
 sudo ufw enable
 sudo ufw allow transmission
-if [ "$DATA_DRIVE" = true ]
+if $DATA_DRIVE
 then
     sudo ufw allow syncthing
 fi
@@ -123,7 +123,7 @@ sleep 15
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
-if [ "$DATA_DRIVE" = true ]
+if $DATA_DRIVE
 then
     mkdir -p ~/.config/autostart
     tee ~/.config/autostart/mount-data-drive.desktop << EOF
@@ -145,7 +145,7 @@ X-GNOME-Autostart-enabled=true
 Name=Start file sync
 EOF
 fi
-if [ "$BACKUP_DRIVE" = true ]
+if $BACKUP_DRIVE
 then
     mkdir -p ~/.config/autostart
     tee ~/.config/autostart/mount-backup-drive.desktop << EOF
@@ -176,11 +176,36 @@ pu logxfer          No
 pu addcarreturn     Yes
 EOF
 mkdir -p ~/.local/share/nautilus/scripts
+tee ~/.local/share/nautilus/scripts/merge-pdfs.sh << "EOF"
+#!/bin/bash
+I=0
+for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+do
+    if (( $I == 0 ))
+    then 
+        TARGET=$FILE
+    else
+        SOURCES+=$FILE
+        SOURCES+=" "
+    fi
+    (( I++ ))
+done
+pdfunite $TARGET $SOURCES .pdfunite-tmp.pdf
+mv .pdfunite-tmp.pdf $TARGET
+EOF
+chmod +x ~/.local/share/nautilus/scripts/merge-pdfs.sh
 tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << "EOF"
 #!/bin/bash
 for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
 do
-    pdftoppm -png $FILE $(basename $FILE .pdf)
+    PAGES=$(pdfinfo $FILE | grep -P -o "Pages:\s*\K\d+")
+    FILENAME=$(basename $FILE .pdf)
+    if [[ $PAGES == 1 ]]
+    then
+        pdftoppm -singlefile -png $FILE $FILENAME
+    else
+        pdftoppm -png $FILE $FILENAME
+    fi
 done
 EOF
 chmod +x ~/.local/share/nautilus/scripts/pdf-to-png.sh
@@ -188,18 +213,10 @@ tee ~/.local/share/nautilus/scripts/remove-metadata.sh << "EOF"
 #!/bin/bash
 for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
 do
-    mat2 $FILE
+    mat2 --inplace -L $FILE
 done
 EOF
 chmod +x ~/.local/share/nautilus/scripts/remove-metadata.sh
-tee ~/.local/share/nautilus/scripts/remove-metadata-lightweight.sh << "EOF"
-#!/bin/bash
-for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
-do
-    mat2 --lightweight $FILE
-done
-EOF
-chmod +x ~/.local/share/nautilus/scripts/remove-metadata-lightweight.sh
 tee ~/.gitconfig << EOF
 [user]
 name=locxter
@@ -220,7 +237,6 @@ tee ~/.mozilla/firefox/profiles.ini << EOF
 Name=locxter
 IsRelative=1
 Path=locxter
-
 [General]
 StartWithLastProfile=0
 Version=2

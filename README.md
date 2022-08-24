@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository includes my personal setup script for most of the terminal based configuration needed on a fresh Debian installation.
+This repository includes my personal setup script for most of the terminal based configuration needed on a fresh non-free Debian installation.
 
 ## Dependencies
 
