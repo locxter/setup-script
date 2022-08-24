@@ -183,14 +183,14 @@ for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
 do
     if (( $I == 0 ))
     then 
-        TARGET=$FILE
-    else
-        SOURCES+=$FILE
-        SOURCES+=" "
+        TARGET=$(basename $FILE .pdf)
+        TARGET+="-merged.pdf"
     fi
+    SOURCES+=$FILE
+    SOURCES+=" "
     (( I++ ))
 done
-pdfunite $TARGET $SOURCES .pdfunite-tmp.pdf
+pdfunite $SOURCES .pdfunite-tmp.pdf
 mv .pdfunite-tmp.pdf $TARGET
 EOF
 chmod +x ~/.local/share/nautilus/scripts/merge-pdfs.sh
@@ -199,12 +199,12 @@ tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << "EOF"
 for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
 do
     PAGES=$(pdfinfo $FILE | grep -P -o "Pages:\s*\K\d+")
-    FILENAME=$(basename $FILE .pdf)
+    TARGET=$(basename $FILE .pdf)
     if [[ $PAGES == 1 ]]
     then
-        pdftoppm -singlefile -png $FILE $FILENAME
+        pdftoppm -singlefile -png $FILE $TARGET
     else
-        pdftoppm -png $FILE $FILENAME
+        pdftoppm -png $FILE $TARGET
     fi
 done
 EOF
@@ -213,7 +213,7 @@ tee ~/.local/share/nautilus/scripts/remove-metadata.sh << "EOF"
 #!/bin/bash
 for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
 do
-    mat2 --inplace -L $FILE
+    mat2 --inplace --lightweight $FILE
 done
 EOF
 chmod +x ~/.local/share/nautilus/scripts/remove-metadata.sh
