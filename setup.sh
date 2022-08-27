@@ -176,6 +176,24 @@ pu logxfer          No
 pu addcarreturn     Yes
 EOF
 mkdir -p ~/.local/share/nautilus/scripts
+tee ~/.local/share/nautilus/scripts/add-pdf-to-xopp.sh << "EOF"
+#!/bin/bash
+for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+do
+    TYPE=$(echo $FILE | grep -P -o ".*\K\..*")
+    if [[ $TYPE == .xopp ]]
+    then
+        TARGET=$(basename $FILE)
+        TARGET+=".bg.pdf"
+    else
+        SOURCES+=$FILE
+        SOURCES+=" "
+    fi
+done
+pdfunite $TARGET $SOURCES .pdfunite-tmp.pdf
+mv .pdfunite-tmp.pdf $TARGET
+EOF
+chmod +x ~/.local/share/nautilus/scripts/add-pdf-to-xopp.sh
 tee ~/.local/share/nautilus/scripts/merge-pdfs.sh << "EOF"
 #!/bin/bash
 I=0
@@ -190,8 +208,7 @@ do
     SOURCES+=" "
     (( I++ ))
 done
-pdfunite $SOURCES .pdfunite-tmp.pdf
-mv .pdfunite-tmp.pdf $TARGET
+pdfunite $SOURCES $TARGET
 EOF
 chmod +x ~/.local/share/nautilus/scripts/merge-pdfs.sh
 tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << "EOF"
