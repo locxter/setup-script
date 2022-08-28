@@ -46,14 +46,15 @@ echo "##########################################################################
 echo "#              Removing unnecessary software, updating the system              #"
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
-wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg] https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
+wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/vscodium-keyring.gpg] https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
 wget -qO - https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor | sudo dd of=/usr/share/keyrings/signal-desktop-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-xenial.list
+echo "deb [signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-desktop.list
+echo "deb http://deb.debian.org/debian bullseye-backports main non-free contrib" | sudo tee /etc/apt/sources.list.d/bullseye-backports.list
 sudo apt update
 sudo apt purge gnome-games gnome-calendar gnome-clocks gnome-contacts gnome-documents evolution gnome-maps gnome-music malcontent shotwell gnome-todo gnome-weather seahorse synaptic gnome-tweaks gnome-shell-extensions gnome-shell-extension-prefs gnome-characters baobab gnome-font-viewer im-config -y
 sudo apt full-upgrade -y
-sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch minicom curl mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop -y
+sudo apt install ufw cups locales-all aspell-de hunspell-de-de git build-essential gdb cmake openjdk-17-jdk maven nodejs npm adb fastboot lm-sensors neofetch minicom curl mat2 poppler-utils bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -194,6 +195,21 @@ pdfunite $TARGET $SOURCES .pdfunite-tmp.pdf
 mv .pdfunite-tmp.pdf $TARGET
 EOF
 chmod +x ~/.local/share/nautilus/scripts/add-pdf-to-xopp.sh
+tee ~/.local/share/nautilus/scripts/convert-pdf-to-png.sh << "EOF"
+#!/bin/bash
+for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+do
+    PAGES=$(pdfinfo $FILE | grep -P -o "Pages:\s*\K\d+")
+    TARGET=$(basename $FILE .pdf)
+    if [[ $PAGES == 1 ]]
+    then
+        pdftoppm -singlefile -png $FILE $TARGET
+    else
+        pdftoppm -png $FILE $TARGET
+    fi
+done
+EOF
+chmod +x ~/.local/share/nautilus/scripts/convert-pdf-to-png.sh
 tee ~/.local/share/nautilus/scripts/merge-pdfs.sh << "EOF"
 #!/bin/bash
 I=0
@@ -211,21 +227,6 @@ done
 pdfunite $SOURCES $TARGET
 EOF
 chmod +x ~/.local/share/nautilus/scripts/merge-pdfs.sh
-tee ~/.local/share/nautilus/scripts/pdf-to-png.sh << "EOF"
-#!/bin/bash
-for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
-do
-    PAGES=$(pdfinfo $FILE | grep -P -o "Pages:\s*\K\d+")
-    TARGET=$(basename $FILE .pdf)
-    if [[ $PAGES == 1 ]]
-    then
-        pdftoppm -singlefile -png $FILE $TARGET
-    else
-        pdftoppm -png $FILE $TARGET
-    fi
-done
-EOF
-chmod +x ~/.local/share/nautilus/scripts/pdf-to-png.sh
 tee ~/.local/share/nautilus/scripts/remove-metadata.sh << "EOF"
 #!/bin/bash
 for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
