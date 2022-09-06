@@ -6,7 +6,7 @@ echo "##########################################################################
 echo "#          Add data drive scripts and programs to this computer?[y/N]          #"
 echo "################################################################################"
 read REPLY
-if [[ $REPLY =~ [Yy]* ]]
+if [[ $REPLY =~ [Yy]+ ]]
 then
     DATA_DRIVE=true
     echo "################################################################################"
@@ -26,7 +26,7 @@ echo "##########################################################################
 echo "#         Add backup drive scripts and programs to this computer?[y/N]         #"
 echo "################################################################################"
 read REPLY
-if [[ $REPLY =~ [Yy]* ]]
+if [[ $REPLY =~ [Yy]+ ]]
 then
     BACKUP_DRIVE=true
     echo "################################################################################"
@@ -315,6 +315,7 @@ echo "##########################################################################
 gsettings set org.gnome.mutter center-new-windows true
 gsettings set org.gnome.desktop.interface enable-hot-corners false
 gsettings set org.gnome.mutter workspaces-only-on-primary false
+gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
 gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "[]"
 gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>Tab', '<Alt>Tab']"
