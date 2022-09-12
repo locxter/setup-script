@@ -63,7 +63,7 @@ sudo apt autoclean
 sudo snap refresh
 sudo snap install node --classic
 sudo snap install codium --classic
-sudo snap install chromium signal-desktop
+sudo snap install chromium signal-desktop whatsie
 mkdir -p ~/Applications
 wget -O ~/Applications/tutanota-desktop-linux.AppImage https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage
 chmod +x ~/Applications/tutanota-desktop-linux.AppImage
@@ -272,7 +272,7 @@ gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift
 gsettings set org.gnome.shell.window-switcher current-workspace-only false
 gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
 gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
-gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'tutanota-desktop.desktop', 'signal-desktop_signal-desktop.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
+gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'tutanota-desktop.desktop', 'signal-desktop_signal-desktop.desktop', 'whatsie_whatsie.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.gnome.desktop.app-folders folder-children "['']"
 gsettings set org.gnome.shell app-picker-layout "[]"
 echo "################################################################################"
