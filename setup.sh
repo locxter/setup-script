@@ -253,7 +253,7 @@ cp libreoffice-spreadsheet-template.ots ~/.config/libreoffice/4/user/template/sp
 mkdir -p ~/.config/libreoffice/4/user/autocorr
 cp libreoffice-autocorrect.dat ~/.config/libreoffice/4/user/autocorr/acor_de-DE.dat
 mkdir -p ~/.config/xournalpp
-cp xournalpp-config.xml ~/.config/xournalpp/settings.xml
+unzip -o xournalpp-config.zip -d ~/.config/xournalpp
 mkdir -p ~/.local/share/rhythmbox
 cp rhythmbox-database.xml ~/.local/share/rhythmbox/rhythmdb.xml
 echo "################################################################################"
