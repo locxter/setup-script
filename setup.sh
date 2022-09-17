@@ -47,7 +47,7 @@ echo "#              Removing unnecessary software, updating the system         
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
 sudo apt update
-sudo apt purge aisleriot gnome-calendar gnome-mahjongg gnome-mines shotwell remmina gnome-sudoku gnome-todo seahorse thunderbird baobab gnome-font-viewer usb-creator-gtk -y
+sudo apt purge brltty aisleriot gnome-calendar gnome-mahjongg gnome-mines shotwell remmina gnome-sudoku gnome-todo seahorse thunderbird baobab gnome-font-viewer usb-creator-gtk -y
 if ! $BACKUP_DRIVE
 then
     sudo apt purge deja-dup -y
