@@ -229,10 +229,16 @@ EOF
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
 codium --install-extension vsciot-vscode.vscode-arduino --install-extension ms-vscode.cpptools --install-extension twxs.cmake --install-extension ms-vscode.cmake-tools --install-extension vscjava.vscode-java-debug --install-extension redhat.java --install-extension vscjava.vscode-maven --install-extension eg2.vscode-npm-script --install-extension vscjava.vscode-java-dependency --install-extension Tyriar.sort-lines --install-extension vscjava.vscode-java-test --install-extension rangav.vscode-thunder-client
+mkdir -p ~/.arduino15
+cp arduino-config.txt ~/.arduino15/preferences.txt
 mkdir -p ~/Arduino/tools
 wget -O ESP8266LittleFS-2.6.0.zip https://github.com/earlephilhower/arduino-esp8266littlefs-plugin/releases/download/2.6.0/ESP8266LittleFS-2.6.0.zip
 unzip -o ESP8266LittleFS-2.6.0.zip -d ~/Arduino/tools
 rm -rf ESP8266LittleFS-2.6.0.zip
+mkdir -p ~/Arduino/tools/ESP32FS/tool
+wget -O esp32fs.zip https://github.com/lorol/arduino-esp32fs-plugin/releases/download/2.0.7/esp32fs.zip
+unzip -o esp32fs.zip -d ~/Arduino/tools/ESP32FS/tool
+rm -rf esp32fs.zip
 mkdir -p ~/.local/share/cura/4.13
 unzip -o cura-config.zip -d ~/.local/share/cura/4.13
 mkdir -p ~/snap/firefox/common/.mozilla/firefox
