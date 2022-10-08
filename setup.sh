@@ -53,7 +53,7 @@ then
     sudo apt purge deja-dup -y
 fi
 sudo apt full-upgrade -y
-sudo apt install libfuse2 libserialport0 patchelf ubuntu-restricted-extras git build-essential gdb cmake openjdk-17-jdk maven android-sdk-platform-tools lm-sensors neofetch minicom curl gedit-plugins mat2 bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino xournalpp musescore3 -y
+sudo apt install libfuse2 libserialport0 patchelf ubuntu-restricted-extras git build-essential gdb cmake openjdk-17-jdk maven android-sdk-platform-tools lm-sensors neofetch minicom curl gedit-plugins mat2 bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino xournalpp musescore3 lmms -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
