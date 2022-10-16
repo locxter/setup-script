@@ -54,7 +54,7 @@ echo "deb-src [signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb
 sudo apt update
 sudo apt purge sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf git build-essential gdb cmake openjdk-17-jdk maven nodejs android-sdk-platform-tools minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 inkscape anki kiwix freecad arduino chromium codium xournalpp musescore3 -y
+sudo apt install libserialport0 patchelf git build-essential gdb cmake openjdk-17-jdk maven nodejs android-sdk-platform-tools python3-serial minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 inkscape anki kiwix freecad arduino chromium codium xournalpp musescore3 -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
