@@ -52,7 +52,7 @@ wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor 
 echo "deb [signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 echo "deb-src [signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
 sudo apt update
-sudo apt purge sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator -y
+sudo apt purge sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator mintstick -y
 sudo apt full-upgrade -y
 sudo apt install libserialport0 patchelf git build-essential gdb cmake openjdk-17-jdk maven nodejs android-sdk-platform-tools python3-serial minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 inkscape anki kiwix freecad arduino chromium codium xournalpp musescore3 -y
 if $DATA_DRIVE
