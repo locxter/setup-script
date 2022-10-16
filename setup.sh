@@ -46,64 +46,29 @@ echo "##########################################################################
 echo "#              Removing unnecessary software, updating the system              #"
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
+wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/vscodium-keyring.gpg]   https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
+wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | sudo dd of=/usr/share/keyrings/nodesource-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+echo "deb-src [signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
 sudo apt update
-sudo apt purge brltty aisleriot gnome-calendar gnome-mahjongg gnome-mines shotwell remmina gnome-sudoku gnome-todo seahorse thunderbird baobab gnome-font-viewer usb-creator-gtk -y
-if ! $BACKUP_DRIVE
-then
-    sudo apt purge deja-dup -y
-fi
+sudo apt purge sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator -y
 sudo apt full-upgrade -y
-sudo apt install libfuse2 libserialport0 patchelf ubuntu-restricted-extras git build-essential gdb cmake openjdk-17-jdk maven android-sdk-platform-tools lm-sensors neofetch minicom curl gedit-plugins mat2 bleachbit gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino xournalpp musescore3 lmms -y
+sudo apt install libserialport0 patchelf git build-essential gdb cmake openjdk-17-jdk maven nodejs android-sdk-platform-tools minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 inkscape anki kiwix freecad arduino chromium codium xournalpp musescore3 -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
 fi
+if $BACKUP_DRIVE
+then
+    sudo apt install deja-dup -y
+fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
-sudo snap refresh
-sudo snap install node --classic
-sudo snap install codium --classic
-sudo snap install chromium signal-desktop whatsapp-for-linux
+sudo flatpak install flathub org.signal.Signal io.github.mimbrero.WhatsAppDesktop com.ultimaker.cura -y
 mkdir -p ~/Applications
 wget -O ~/Applications/tutanota-desktop-linux.AppImage https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage
 chmod +x ~/Applications/tutanota-desktop-linux.AppImage
-echo "################################################################################"
-echo "#                           Configuring the firewall                           #"
-echo "################################################################################"
-sudo ufw enable
-sudo ufw allow transmission
-if $DATA_DRIVE
-then
-    sudo ufw allow syncthing
-fi
-echo "################################################################################"
-echo "#                Configuring DNS over TLS and mac randomization                #"
-echo "################################################################################"
-sudo systemctl stop NetworkManager
-sudo mkdir -p /etc/NetworkManager/conf.d
-sudo tee /etc/NetworkManager/conf.d/no-dns.conf << EOF
-[main]
-dns=none
-systemd-resolved=false
-EOF
-sudo tee /etc/NetworkManager/conf.d/mac-randomization.conf << EOF
-[device]
-wifi.scan-rand-mac-address=yes
-[connection-mac-randomization]
-ethernet.cloned-mac-address=stable
-wifi.cloned-mac-address=stable
-EOF
-sudo mkdir -p /etc/systemd
-sudo tee /etc/systemd/resolved.conf << EOF
-[Resolve]
-DNS=176.9.93.198#dnsforge.de
-DNS=176.9.1.117#dnsforge.de
-DNSOverTLS=yes
-EOF
-sudo systemctl enable systemd-resolved
-sudo systemctl start NetworkManager
-sudo systemctl start systemd-resolved
-sleep 30
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
@@ -151,6 +116,8 @@ X-GNOME-Autostart-enabled=true
 Name=Start backup
 EOF
 fi
+sudo usermod -a -G dialout locxter
+sudo usermod -a -G tty locxter
 sudo patchelf --add-needed libserialport.so.0 /usr/lib/x86_64-linux-gnu/liblistSerialsj.so.1.4.0
 sudo mkdir -p /etc/minicom
 sudo tee /etc/minicom/minirc.dfl << EOF
@@ -160,10 +127,10 @@ pu logconn          No
 pu logxfer          No 
 pu addcarreturn     Yes
 EOF
-mkdir -p ~/.local/share/nautilus/scripts
-tee ~/.local/share/nautilus/scripts/add-pdf-to-xopp.sh << "EOF"
+mkdir -p ~/.local/share/nemo/scripts
+tee ~/.local/share/nemo/scripts/add-pdf-to-xopp.sh << "EOF"
 #!/bin/bash
-for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+for FILE in $NEMO_SCRIPT_SELECTED_FILE_PATHS
 do
     TYPE=$(echo $FILE | grep -P -o ".*\K\..*")
     if [[ $TYPE == .xopp ]]
@@ -178,10 +145,10 @@ done
 pdfunite $TARGET $SOURCES .pdfunite-tmp.pdf
 mv .pdfunite-tmp.pdf $TARGET
 EOF
-chmod +x ~/.local/share/nautilus/scripts/add-pdf-to-xopp.sh
-tee ~/.local/share/nautilus/scripts/convert-pdf-to-png.sh << "EOF"
+chmod +x ~/.local/share/nemo/scripts/add-pdf-to-xopp.sh
+tee ~/.local/share/nemo/scripts/convert-pdf-to-png.sh << "EOF"
 #!/bin/bash
-for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+for FILE in $NEMO_SCRIPT_SELECTED_FILE_PATHS
 do
     PAGES=$(pdfinfo $FILE | grep -P -o "Pages:\s*\K\d+")
     TARGET=$(basename $FILE .pdf)
@@ -193,11 +160,11 @@ do
     fi
 done
 EOF
-chmod +x ~/.local/share/nautilus/scripts/convert-pdf-to-png.sh
-tee ~/.local/share/nautilus/scripts/merge-pdfs.sh << "EOF"
+chmod +x ~/.local/share/nemo/scripts/convert-pdf-to-png.sh
+tee ~/.local/share/nemo/scripts/merge-pdfs.sh << "EOF"
 #!/bin/bash
 I=0
-for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+for FILE in $NEMO_SCRIPT_SELECTED_FILE_PATHS
 do
     if (( $I == 0 ))
     then 
@@ -210,15 +177,50 @@ do
 done
 pdfunite $SOURCES $TARGET
 EOF
-chmod +x ~/.local/share/nautilus/scripts/merge-pdfs.sh
-tee ~/.local/share/nautilus/scripts/remove-metadata.sh << "EOF"
+chmod +x ~/.local/share/nemo/scripts/merge-pdfs.sh
+tee ~/.local/share/nemo/scripts/remove-metadata.sh << "EOF"
 #!/bin/bash
-for FILE in $NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+for FILE in $NEMO_SCRIPT_SELECTED_FILE_PATHS
 do
     mat2 --inplace --lightweight $FILE
 done
 EOF
-chmod +x ~/.local/share/nautilus/scripts/remove-metadata.sh
+chmod +x ~/.local/share/nemo/scripts/remove-metadata.sh
+mkdir -p ~/.local/share/applications
+tee ~/.local/share/applications/org.signal.Signal.desktop << EOF
+[Desktop Entry]
+Name=Signal
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=signal-desktop --file-forwarding org.signal.Signal --use-tray-icon @@u %U @@
+Terminal=false
+Type=Application
+Icon=org.signal.Signal
+StartupWMClass=Signal
+Comment=Private messaging from your desktop
+MimeType=x-scheme-handler/sgnl;x-scheme-handler/signalcaptcha;
+Categories=Network;InstantMessaging;Chat;
+X-Desktop-File-Install-Version=0.26
+X-Flatpak-RenamedFrom=signal-desktop.desktop;
+X-Flatpak=org.signal.Signal
+EOF
+tee ~/.local/share/applications/webapp-Beatbump8822.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Name=Beatbump
+Comment=Web App
+Exec=chromium --app=https://beatbump.ml/home --class=WebApp-Beatbump8822 --user-data-dir=/home/locxter/.local/share/ice/profiles/Beatbump8822
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=gnome-music
+Categories=GTK;AudioVideo;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=WebApp-Beatbump8822
+StartupNotify=true
+X-WebApp-Browser=Chromium
+X-WebApp-URL=https://beatbump.ml/home
+X-WebApp-CustomParameters=
+X-WebApp-Isolated=true
+EOF
 tee ~/.gitconfig << EOF
 [user]
 name=locxter
@@ -239,12 +241,12 @@ mkdir -p ~/Arduino/tools/ESP32FS/tool
 wget -O esp32fs.zip https://github.com/lorol/arduino-esp32fs-plugin/releases/download/2.0.7/esp32fs.zip
 unzip -o esp32fs.zip -d ~/Arduino/tools/ESP32FS/tool
 rm -rf esp32fs.zip
-mkdir -p ~/.local/share/cura/4.13
-unzip -o cura-config.zip -d ~/.local/share/cura/4.13
-mkdir -p ~/snap/firefox/common/.mozilla/firefox
-firefox -createProfile "locxter /home/locxter/snap/firefox/common/.mozilla/firefox/locxter"
-unzip -o firefox-profile.zip -d ~/snap/firefox/common/.mozilla/firefox/locxter
-tee ~/snap/firefox/common/.mozilla/firefox/profiles.ini << EOF
+mkdir -p ~/.var/app/com.ultimaker.cura
+unzip -o cura-config.zip -d ~/.var/app/com.ultimaker.cura
+mkdir -p ~/.mozilla/firefox
+firefox -createProfile "locxter /home/locxter/.mozilla/firefox/locxter"
+unzip -o firefox-profile.zip -d ~/.mozilla/firefox/locxter
+tee ~/.mozilla/firefox/profiles.ini << EOF
 [Profile0]
 Name=locxter
 IsRelative=1
@@ -267,24 +269,56 @@ unzip -o xournalpp-config.zip -d ~/.config/xournalpp
 mkdir -p ~/.local/share/rhythmbox
 cp rhythmbox-database.xml ~/.local/share/rhythmbox/rhythmdb.xml
 echo "################################################################################"
-echo "#                          Setting my profile picture                          #"
-echo "################################################################################"
-cp profile-picture.jpeg ~/.face
-echo "################################################################################"
 echo "#                      Tweaking the desktop to my likings                      #"
 echo "################################################################################"
-gsettings set org.gnome.mutter center-new-windows true
-gsettings set org.gnome.mutter workspaces-only-on-primary false
-gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
-gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "[]"
-gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>Tab', '<Alt>Tab']"
-gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Super>Tab', '<Shift><Alt>Tab']"
-gsettings set org.gnome.shell.window-switcher current-workspace-only false
-gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
-gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
-gsettings set org.gnome.shell favorite-apps "['firefox_firefox.desktop', 'tutanota-desktop.desktop', 'signal-desktop_signal-desktop.desktop', 'whatsapp-for-linux_whatsapp-for-linux.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
-gsettings set org.gnome.desktop.app-folders folder-children "['']"
-gsettings set org.gnome.shell app-picker-layout "[]"
+cp profile-picture.jpeg ~/.face
+gsettings set org.cinnamon.muffin center-new-windows true
+gsettings set org.cinnamon alttab-switcher-show-all-workspaces true
+gsettings set org.cinnamon.desktop.privacy remember-recent-files false
+gsettings set org.nemo.desktop computer-icon-visible false
+gsettings set org.nemo.desktop home-icon-visible false
+gsettings set org.nemo.desktop volumes-visible false
+gsettings set org.cinnamon favorite-apps "['firefox.desktop', 'mintinstall.desktop', 'cinnamon-settings.desktop', 'nemo.desktop', 'org.gnome.Terminal.desktop']"
+gsettings set org.cinnamon panels-enabled "['1:0:left']"
+gsettings set org.cinnamon enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:show-desktop@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6', 'panel1:right:9:network@cinnamon.org:10', 'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12', 'panel1:right:12:calendar@cinnamon.org:13']"
+mkdir -p ~/.cinnamon/configs
+unzip -o applets-config.zip -d ~/.cinnamon/configs
+echo "################################################################################"
+echo "#                           Configuring the firewall                           #"
+echo "################################################################################"
+sudo ufw enable
+if $DATA_DRIVE
+then
+    sudo ufw allow syncthing
+fi
+echo "################################################################################"
+echo "#                Configuring DNS over TLS and mac randomization                #"
+echo "################################################################################"
+sudo systemctl stop NetworkManager
+sudo mkdir -p /etc/NetworkManager/conf.d
+sudo tee /etc/NetworkManager/conf.d/no-dns.conf << EOF
+[main]
+dns=none
+systemd-resolved=false
+EOF
+sudo tee /etc/NetworkManager/conf.d/mac-randomization.conf << EOF
+[device]
+wifi.scan-rand-mac-address=yes
+[connection-mac-randomization]
+ethernet.cloned-mac-address=stable
+wifi.cloned-mac-address=stable
+EOF
+sudo mkdir -p /etc/systemd
+sudo tee /etc/systemd/resolved.conf << EOF
+[Resolve]
+DNS=176.9.93.198#dnsforge.de
+DNS=176.9.1.117#dnsforge.de
+DNSOverTLS=yes
+EOF
+sudo systemctl enable systemd-resolved
+sudo systemctl start systemd-resolved
+sudo systemctl start NetworkManager
+sleep 30
 echo "################################################################################"
 echo "#        Finished the setup, please check the console output for errors        #"
 echo "#             that might occurred and reboot the system afterwards             #"
