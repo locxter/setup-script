@@ -46,15 +46,18 @@ echo "##########################################################################
 echo "#              Removing unnecessary software, updating the system              #"
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
+sudo flatpak uninstall --all --delete-data
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/vscodium-keyring.gpg]   https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vscodium-keyring.gpg]   https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
 wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | sudo dd of=/usr/share/keyrings/nodesource-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-echo "deb-src [signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+echo "deb-src [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
+wget -qO - https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor | sudo dd of=/usr/share/keyrings/signal-desktop-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-desktop.list
 sudo apt update
-sudo apt purge sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator mintstick -y
+sudo apt purge flatpak gir1.2-flatpak-1.0 libflatpak0 sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator mintstick -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf git build-essential gdb cmake openjdk-17-jdk maven nodejs android-sdk-platform-tools python3-serial minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 inkscape anki kiwix freecad arduino chromium codium xournalpp musescore3 -y
+sudo apt install libserialport0 patchelf git build-essential gdb cmake openjdk-17-jdk maven nodejs android-sdk-platform-tools python3-pip python3-serial minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp musescore3 -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -65,10 +68,70 @@ then
 fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
-sudo flatpak install flathub org.signal.Signal io.github.mimbrero.WhatsAppDesktop com.ultimaker.cura -y
-mkdir -p ~/Applications
-wget -O ~/Applications/tutanota-desktop-linux.AppImage https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage
-chmod +x ~/Applications/tutanota-desktop-linux.AppImage
+pip install trimesh
+mkdir -p ~/.local/share/applications
+tee ~/.local/share/applications/webapp-Beatbump8822.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Name=Beatbump
+Comment=Web App
+Exec=chromium --app=https://beatbump.ml/home --class=WebApp-Beatbump8822 --user-data-dir=/home/locxter/.local/share/ice/profiles/Beatbump8822
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=gnome-music
+Categories=GTK;AudioVideo;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=WebApp-Beatbump8822
+StartupNotify=true
+X-WebApp-Browser=Chromium
+X-WebApp-URL=https://beatbump.ml/home
+X-WebApp-CustomParameters=
+X-WebApp-Isolated=true
+EOF
+tee ~/.local/share/applications/webapp-Tutanota3274.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Name=Tutanota
+Comment=Web App
+Exec=chromium --app=https://mail.tutanota.com --class=WebApp-Tutanota3274 --user-data-dir=/home/locxter/.local/share/ice/profiles/Tutanota3274
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/home/locxter/.local/share/ice/icons/Tutanota.png
+Categories=GTK;Network;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=WebApp-Tutanota3274
+StartupNotify=true
+X-WebApp-Browser=Chromium
+X-WebApp-URL=https://mail.tutanota.com
+X-WebApp-CustomParameters=
+X-WebApp-Isolated=true
+EOF
+tee ~/.local/share/applications/webapp-WhatsApp6942.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Name=WhatsApp
+Comment=Web App
+Exec=chromium --app=https://web.whatsapp.com --class=WebApp-WhatsApp6942 --user-data-dir=/home/locxter/.local/share/ice/profiles/WhatsApp6942
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/home/locxter/.local/share/ice/icons/WhatsApp.png
+Categories=GTK;Network;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=WebApp-WhatsApp6942
+StartupNotify=true
+X-WebApp-Browser=Chromium
+X-WebApp-URL=https://web.whatsapp.com
+X-WebApp-CustomParameters=
+X-WebApp-Isolated=true
+EOF
+mkdir -p ~/.local/share/ice/profiles/Beatbump8822
+mkdir -p ~/.local/share/ice/profiles/Tutanota3274
+mkdir -p ~/.local/share/ice/profiles/WhatsApp6942
+mkdir -p ~/.local/share/ice/icons
+unzip -o webapp-icons.zip -d ~/.local/share/ice/icons
 echo "################################################################################"
 echo "#                       Configuring scripts and programs                       #"
 echo "################################################################################"
@@ -186,41 +249,6 @@ do
 done
 EOF
 chmod +x ~/.local/share/nemo/scripts/remove-metadata.sh
-mkdir -p ~/.local/share/applications
-tee ~/.local/share/applications/org.signal.Signal.desktop << EOF
-[Desktop Entry]
-Name=Signal
-Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=signal-desktop --file-forwarding org.signal.Signal --use-tray-icon @@u %U @@
-Terminal=false
-Type=Application
-Icon=org.signal.Signal
-StartupWMClass=Signal
-Comment=Private messaging from your desktop
-MimeType=x-scheme-handler/sgnl;x-scheme-handler/signalcaptcha;
-Categories=Network;InstantMessaging;Chat;
-X-Desktop-File-Install-Version=0.26
-X-Flatpak-RenamedFrom=signal-desktop.desktop;
-X-Flatpak=org.signal.Signal
-EOF
-tee ~/.local/share/applications/webapp-Beatbump8822.desktop << EOF
-[Desktop Entry]
-Version=1.0
-Name=Beatbump
-Comment=Web App
-Exec=chromium --app=https://beatbump.ml/home --class=WebApp-Beatbump8822 --user-data-dir=/home/locxter/.local/share/ice/profiles/Beatbump8822
-Terminal=false
-X-MultipleArgs=false
-Type=Application
-Icon=gnome-music
-Categories=GTK;AudioVideo;
-MimeType=text/html;text/xml;application/xhtml_xml;
-StartupWMClass=WebApp-Beatbump8822
-StartupNotify=true
-X-WebApp-Browser=Chromium
-X-WebApp-URL=https://beatbump.ml/home
-X-WebApp-CustomParameters=
-X-WebApp-Isolated=true
-EOF
 tee ~/.gitconfig << EOF
 [user]
 name=locxter
@@ -241,8 +269,10 @@ mkdir -p ~/Arduino/tools/ESP32FS/tool
 wget -O esp32fs.zip https://github.com/lorol/arduino-esp32fs-plugin/releases/download/2.0.7/esp32fs.zip
 unzip -o esp32fs.zip -d ~/Arduino/tools/ESP32FS/tool
 rm -rf esp32fs.zip
-mkdir -p ~/.var/app/com.ultimaker.cura
-unzip -o cura-config.zip -d ~/.var/app/com.ultimaker.cura
+mkdir -p ~/.local/share/cura
+unzip -o cura-config-1.zip -d ~/.local/share/cura
+mkdir -p ~/.config/cura
+unzip -o cura-config-2.zip -d ~/.config/cura
 mkdir -p ~/.mozilla/firefox
 firefox -createProfile "locxter /home/locxter/.mozilla/firefox/locxter"
 unzip -o firefox-profile.zip -d ~/.mozilla/firefox/locxter
@@ -282,7 +312,7 @@ gsettings set org.cinnamon favorite-apps "['firefox.desktop', 'mintinstall.deskt
 gsettings set org.cinnamon panels-enabled "['1:0:left']"
 gsettings set org.cinnamon enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:show-desktop@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:2:systray@cinnamon.org:3', 'panel1:right:3:xapp-status@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:5:printers@cinnamon.org:6', 'panel1:right:9:network@cinnamon.org:10', 'panel1:right:10:sound@cinnamon.org:11', 'panel1:right:11:power@cinnamon.org:12', 'panel1:right:12:calendar@cinnamon.org:13']"
 mkdir -p ~/.cinnamon/configs
-unzip -o applets-config.zip -d ~/.cinnamon/configs
+unzip -o applet-configs.zip -d ~/.cinnamon/configs
 echo "################################################################################"
 echo "#                           Configuring the firewall                           #"
 echo "################################################################################"
