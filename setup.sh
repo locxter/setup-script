@@ -184,10 +184,10 @@ sudo usermod -a -G tty locxter
 sudo patchelf --add-needed libserialport.so.0 /usr/lib/x86_64-linux-gnu/liblistSerialsj.so.1.4.0
 sudo mkdir -p /etc/minicom
 sudo tee /etc/minicom/minirc.dfl << EOF
-pu port             
+pu port
 pu rtscts           No
-pu logconn          No 
-pu logxfer          No 
+pu logconn          No
+pu logxfer          No
 pu addcarreturn     Yes
 EOF
 mkdir -p ~/.local/share/nemo/scripts
@@ -230,7 +230,7 @@ I=0
 for FILE in $NEMO_SCRIPT_SELECTED_FILE_PATHS
 do
     if (( $I == 0 ))
-    then 
+    then
         TARGET=$(basename $FILE .pdf)
         TARGET+="-merged.pdf"
     fi
