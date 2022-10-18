@@ -303,7 +303,9 @@ echo "#                      Tweaking the desktop to my likings                 
 echo "################################################################################"
 cp profile-picture.jpeg ~/.face
 gsettings set org.cinnamon.muffin center-new-windows true
+gsettings set org.cinnamon.muffin workspace-cycle true
 gsettings set org.cinnamon alttab-switcher-show-all-workspaces true
+gsettings set org.cinnamon.desktop.notifications display-notifications false
 gsettings set org.cinnamon.desktop.privacy remember-recent-files false
 gsettings set org.nemo.desktop computer-icon-visible false
 gsettings set org.nemo.desktop home-icon-visible false
