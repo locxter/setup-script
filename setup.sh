@@ -344,6 +344,7 @@ echo "##########################################################################
 cp profile-picture.jpeg ~/.face
 gsettings set org.cinnamon.muffin center-new-windows true
 gsettings set org.cinnamon.muffin workspace-cycle true
+gsettings set org.cinnamon.muffin workspaces-only-on-primary true
 gsettings set org.cinnamon alttab-switcher-show-all-workspaces true
 gsettings set org.cinnamon.desktop.notifications display-notifications false
 gsettings set org.cinnamon.desktop.privacy remember-recent-files false
