@@ -73,19 +73,19 @@ mkdir -p ~/.local/share/applications
 tee ~/.local/share/applications/webapp-Beatbump8822.desktop << EOF
 [Desktop Entry]
 Version=1.0
-Name=Lofimusic
+Name=Beatbump
 Comment=Web App
-Exec=chromium --app=https://lofimusic.app --class=WebApp-Lofimusic7613 --user-data-dir=/home/locxter/.local/share/ice/profiles/Lofimusic7613
+Exec=chromium --app=https://beatbump.ml/home --class=WebApp-Beatbump8822 --user-data-dir=/home/locxter/.local/share/ice/profiles/Beatbump8822
 Terminal=false
 X-MultipleArgs=false
 Type=Application
-Icon=/home/locxter/.local/share/ice/icons/Lofimusic.png
+Icon=/home/locxter/.local/share/ice/icons/Beatbump.png
 Categories=GTK;AudioVideo;
 MimeType=text/html;text/xml;application/xhtml_xml;
-StartupWMClass=WebApp-Lofimusic7613
+StartupWMClass=WebApp-Beatbump8822
 StartupNotify=true
 X-WebApp-Browser=Chromium
-X-WebApp-URL=https://lofimusic.app
+X-WebApp-URL=https://beatbump.ml/home
 X-WebApp-CustomParameters=
 X-WebApp-Isolated=true
 EOF
@@ -122,7 +122,7 @@ Categories=GTK;Office;
 MimeType=text/html;text/xml;application/xhtml_xml;
 StartupWMClass=WebApp-PomodoroKitty9459
 StartupNotify=true
-X-WebApp-Browser=Firefox
+X-WebApp-Browser=Chromium
 X-WebApp-URL=https://pomodorokitty.com
 X-WebApp-CustomParameters=
 X-WebApp-Isolated=true
