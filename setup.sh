@@ -70,41 +70,60 @@ sudo apt autoremove --purge -y
 sudo apt autoclean
 pip3 install trimesh
 mkdir -p ~/.local/share/applications
+tee ~/.local/share/applications/webapp-Beatbump8822.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Name=Lofimusic
+Comment=Web App
+Exec=chromium --app=https://lofimusic.app --class=WebApp-Lofimusic7613 --user-data-dir=/home/locxter/.local/share/ice/profiles/Lofimusic7613
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/home/locxter/.local/share/ice/icons/Lofimusic.png
+Categories=GTK;AudioVideo;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=WebApp-Lofimusic7613
+StartupNotify=true
+X-WebApp-Browser=Chromium
+X-WebApp-URL=https://lofimusic.app
+X-WebApp-CustomParameters=
+X-WebApp-Isolated=true
+EOF
+tee ~/.local/share/applications/webapp-Lofimusic7613.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Name=Lofimusic
+Comment=Web App
+Exec=chromium --app=https://lofimusic.app --class=WebApp-Lofimusic7613 --user-data-dir=/home/locxter/.local/share/ice/profiles/Lofimusic7613
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/home/locxter/.local/share/ice/icons/Lofimusic.png
+Categories=GTK;AudioVideo;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=WebApp-Lofimusic7613
+StartupNotify=true
+X-WebApp-Browser=Chromium
+X-WebApp-URL=https://lofimusic.app
+X-WebApp-CustomParameters=
+X-WebApp-Isolated=true
+EOF
 tee ~/.local/share/applications/webapp-PomodoroKitty9459.desktop << EOF
 [Desktop Entry]
 Version=1.0
 Name=Pomodoro Kitty
 Comment=Web App
-Exec=chromium --app=https://pomodorokitty.com/ --class=WebApp-PomodoroKitty9459 --user-data-dir=/home/locxter/.local/share/ice/profiles/PomodoroKitty9459
+Exec=chromium --app=https://pomodorokitty.com --class=WebApp-PomodoroKitty9459 --user-data-dir=/home/locxter/.local/share/ice/profiles/PomodoroKitty9459
 Terminal=false
 X-MultipleArgs=false
 Type=Application
-Icon=gnome-break-timer
+Icon=/home/locxter/.local/share/ice/icons/PomodoroKitty.png
 Categories=GTK;Office;
 MimeType=text/html;text/xml;application/xhtml_xml;
 StartupWMClass=WebApp-PomodoroKitty9459
 StartupNotify=true
-X-WebApp-Browser=Chromium
-X-WebApp-URL=https://pomodorokitty.com/
-X-WebApp-CustomParameters=
-X-WebApp-Isolated=true
-EOF
-tee ~/.local/share/applications/webapp-Beatbump8822.desktop << EOF
-[Desktop Entry]
-Version=1.0
-Name=Beatbump
-Comment=Web App
-Exec=chromium --app=https://beatbump.ml/home --class=WebApp-Beatbump8822 --user-data-dir=/home/locxter/.local/share/ice/profiles/Beatbump8822
-Terminal=false
-X-MultipleArgs=false
-Type=Application
-Icon=gnome-music
-Categories=GTK;AudioVideo;
-MimeType=text/html;text/xml;application/xhtml_xml;
-StartupWMClass=WebApp-Beatbump8822
-StartupNotify=true
-X-WebApp-Browser=Chromium
-X-WebApp-URL=https://beatbump.ml/home
+X-WebApp-Browser=Firefox
+X-WebApp-URL=https://pomodorokitty.com
 X-WebApp-CustomParameters=
 X-WebApp-Isolated=true
 EOF
@@ -146,8 +165,9 @@ X-WebApp-URL=https://web.whatsapp.com
 X-WebApp-CustomParameters=
 X-WebApp-Isolated=true
 EOF
-mkdir -p ~/.local/share/ice/profiles/PomodoroKitty9459
 mkdir -p ~/.local/share/ice/profiles/Beatbump8822
+mkdir -p ~/.local/share/ice/profiles/Lofimusic7613
+mkdir -p ~/.local/share/ice/profiles/PomodoroKitty9459
 mkdir -p ~/.local/share/ice/profiles/Tutanota3274
 mkdir -p ~/.local/share/ice/profiles/WhatsApp6942
 mkdir -p ~/.local/share/ice/icons
