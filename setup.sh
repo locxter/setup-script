@@ -127,6 +127,25 @@ X-WebApp-URL=https://pomodorokitty.com
 X-WebApp-CustomParameters=
 X-WebApp-Isolated=true
 EOF
+tee ~/.local/share/applications/webapp-StandardNotes5817.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Name=Standard Notes
+Comment=Web App
+Exec=chromium --app=https://app.standardnotes.com --class=WebApp-StandardNotes5817 --user-data-dir=/home/locxter/.local/share/ice/profiles/StandardNotes5817
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/home/locxter/.local/share/ice/icons/StandardNotes.png
+Categories=GTK;Network;
+MimeType=text/html;text/xml;application/xhtml_xml;
+StartupWMClass=WebApp-StandardNotes5817
+StartupNotify=true
+X-WebApp-Browser=Chromium
+X-WebApp-URL=https://app.standardnotes.com
+X-WebApp-CustomParameters=
+X-WebApp-Isolated=true
+EOF
 tee ~/.local/share/applications/webapp-Tutanota3274.desktop << EOF
 [Desktop Entry]
 Version=1.0
@@ -168,6 +187,7 @@ EOF
 mkdir -p ~/.local/share/ice/profiles/Beatbump8822
 mkdir -p ~/.local/share/ice/profiles/Lofimusic7613
 mkdir -p ~/.local/share/ice/profiles/PomodoroKitty9459
+mkdir -p ~/.local/share/ice/profiles/StandardNotes5817
 mkdir -p ~/.local/share/ice/profiles/Tutanota3274
 mkdir -p ~/.local/share/ice/profiles/WhatsApp6942
 mkdir -p ~/.local/share/ice/icons
