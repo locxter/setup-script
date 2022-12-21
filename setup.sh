@@ -361,21 +361,30 @@ cp rhythmbox-database.xml ~/.local/share/rhythmbox/rhythmdb.xml
 echo "################################################################################"
 echo "#                      Tweaking the desktop to my likings                      #"
 echo "################################################################################"
+sudo cp wallpaper.jpeg /usr/share/backgrounds/wallpaper.jpeg
+sudo mkdir -p /etc/lightdm
+sudo tee /etc/lightdm/slick-greeter.conf << EOF
+[Greeter]
+theme-name=Mint-Y-Dark-Aqua
+icon-theme-name=Mint-Y-Dark-Aqua
+background=/usr/share/backgrounds/wallpaper.jpeg
+cursor-theme-name=DMZ-White
+EOF
 cp profile-picture.jpeg ~/.face
+gsettings set org.cinnamon.desktop.background picture-uri "file:///usr/share/backgrounds/wallpaper.jpeg"
 gsettings set org.cinnamon.muffin center-new-windows true
 gsettings set org.cinnamon.muffin workspace-cycle true
 gsettings set org.cinnamon.muffin workspaces-only-on-primary true
 gsettings set org.cinnamon alttab-switcher-show-all-workspaces true
 gsettings set org.cinnamon.desktop.notifications display-notifications false
 gsettings set org.cinnamon.desktop.privacy remember-recent-files false
-gsettings set org.nemo.desktop computer-icon-visible false
-gsettings set org.nemo.desktop home-icon-visible false
 gsettings set org.nemo.desktop volumes-visible false
-gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark"
-gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark"
+gsettings set org.cinnamon.desktop.interface cursor-theme "DMZ-White"
+gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark-Aqua"
+gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
 gsettings set org.cinnamon favorite-apps "['firefox.desktop', 'mintinstall.desktop', 'cinnamon-settings.desktop', 'nemo.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.cinnamon panels-enabled "['1:0:left']"
-gsettings set org.cinnamon enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:show-desktop@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:0:systray@cinnamon.org:3', 'panel1:right:0:xapp-status@cinnamon.org:4', 'panel1:right:3:notifications@cinnamon.org:5', 'panel1:right:4:printers@cinnamon.org:6', 'panel1:right:5:network@cinnamon.org:10', 'panel1:right:6:sound@cinnamon.org:11', 'panel1:right:7:power@cinnamon.org:12', 'panel1:right:8:calendar@cinnamon.org:13', 'panel1:right:2:desaturate-cinnamon@locxter:57']"
+gsettings set org.cinnamon enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:3:systray@cinnamon.org:3', 'panel1:right:4:xapp-status@cinnamon.org:4', 'panel1:right:6:notifications@cinnamon.org:5', 'panel1:right:7:printers@cinnamon.org:6', 'panel1:right:8:network@cinnamon.org:10', 'panel1:right:9:sound@cinnamon.org:11', 'panel1:right:10:power@cinnamon.org:12', 'panel1:right:11:calendar@cinnamon.org:13', 'panel1:right:5:desaturate-cinnamon@locxter:57', 'panel1:right:12:cornerbar@cinnamon.org:31', 'panel1:left:1:separator@cinnamon.org:32']"
 mkdir -p ~/.cinnamon/configs
 unzip -o applet-configs.zip -d ~/.cinnamon/configs
 mkdir -p ~/.local/share/cinnamon/applets
