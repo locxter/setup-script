@@ -368,7 +368,6 @@ sudo tee /etc/lightdm/slick-greeter.conf << EOF
 theme-name=Mint-Y-Dark-Aqua
 icon-theme-name=Mint-Y-Dark-Aqua
 background=/usr/share/backgrounds/wallpaper.jpeg
-cursor-theme-name=DMZ-White
 EOF
 cp profile-picture.jpeg ~/.face
 gsettings set org.cinnamon.desktop.background picture-uri "file:///usr/share/backgrounds/wallpaper.jpeg"
@@ -379,7 +378,6 @@ gsettings set org.cinnamon alttab-switcher-show-all-workspaces true
 gsettings set org.cinnamon.desktop.notifications display-notifications false
 gsettings set org.cinnamon.desktop.privacy remember-recent-files false
 gsettings set org.nemo.desktop volumes-visible false
-gsettings set org.cinnamon.desktop.interface cursor-theme "DMZ-White"
 gsettings set org.cinnamon.desktop.interface icon-theme "Mint-Y-Dark-Aqua"
 gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
 gsettings set org.cinnamon favorite-apps "['firefox.desktop', 'mintinstall.desktop', 'cinnamon-settings.desktop', 'nemo.desktop', 'org.gnome.Terminal.desktop']"
