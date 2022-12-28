@@ -50,14 +50,14 @@ sudo flatpak uninstall --all --delete-data
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-keyring.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vscodium-keyring.gpg]   https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
 wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | sudo dd of=/usr/share/keyrings/nodesource-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-echo "deb-src [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_16.x jammy main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_18.x jammy main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+echo "deb-src [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_18.x jammy main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
 wget -qO - https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor | sudo dd of=/usr/share/keyrings/signal-desktop-keyring.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-desktop.list
 sudo apt update
 sudo apt purge flatpak gir1.2-flatpak-1.0 libflatpak0 sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator mintstick -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial git build-essential gdb cmake openjdk-17-jdk maven nodejs android-sdk-platform-tools python3-pip htop minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp musescore3 -y
+sudo apt install libserialport0 patchelf python3-serial git build-essential gdb cmake openjdk-17-jdk maven rust-all nodejs android-sdk-platform-tools python3-pip htop minicom mat2 bleachbit dconf-editor gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp musescore3 -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -318,7 +318,7 @@ defaultBranch = main
 EOF
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
-codium --install-extension vsciot-vscode.vscode-arduino --install-extension ms-vscode.cpptools --install-extension twxs.cmake --install-extension ms-vscode.cmake-tools --install-extension vscjava.vscode-java-debug --install-extension redhat.java --install-extension vscjava.vscode-maven --install-extension eg2.vscode-npm-script --install-extension vscjava.vscode-java-dependency --install-extension Tyriar.sort-lines --install-extension vscjava.vscode-java-test --install-extension rangav.vscode-thunder-client
+codium --install-extension vsciot-vscode.vscode-arduino --install-extension ms-vscode.cpptools --install-extension twxs.cmake --install-extension ms-vscode.cmake-tools --install-extension vscjava.vscode-java-debug --install-extension redhat.java --install-extension vscjava.vscode-maven --install-extension eg2.vscode-npm-script --install-extension vscjava.vscode-java-dependency --install-extension Tyriar.sort-lines --install-extension vscjava.vscode-java-test --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension panicbit.cargo
 mkdir -p ~/.arduino15
 cp arduino-config.txt ~/.arduino15/preferences.txt
 mkdir -p ~/Arduino/tools
