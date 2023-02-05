@@ -383,10 +383,17 @@ gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
 gsettings set org.cinnamon favorite-apps "['firefox.desktop', 'mintinstall.desktop', 'cinnamon-settings.desktop', 'nemo.desktop', 'org.gnome.Terminal.desktop']"
 gsettings set org.cinnamon panels-enabled "['1:0:left']"
 gsettings set org.cinnamon enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:3:systray@cinnamon.org:3', 'panel1:right:4:xapp-status@cinnamon.org:4', 'panel1:right:6:notifications@cinnamon.org:5', 'panel1:right:7:printers@cinnamon.org:6', 'panel1:right:8:network@cinnamon.org:10', 'panel1:right:9:sound@cinnamon.org:11', 'panel1:right:10:power@cinnamon.org:12', 'panel1:right:11:calendar@cinnamon.org:13', 'panel1:right:5:desaturate-cinnamon@locxter:57', 'panel1:right:12:cornerbar@cinnamon.org:31', 'panel1:left:1:separator@cinnamon.org:32']"
+gsettings set org.cinnamon desklet-decorations 0
+gsettings set org.cinnamon enabled-desklets "['clock@cinnamon.org:2:225:75', 'diskspace@schorschii:3:2150:50', 'diskspace@schorschii:4:2150:250', 'cpuload@kimse:6:2350:250', 'diskspace@schorschii:13:2350:50']"
 mkdir -p ~/.cinnamon/configs
 unzip -o applet-configs.zip -d ~/.cinnamon/configs
 mkdir -p ~/.local/share/cinnamon/applets
 unzip -o desaturate-cinnamon@locxter.zip -d ~/.local/share/cinnamon/applets
+mkdir -p ~/.config/cinnamon/spices
+unzip -o desklet-configs.zip -d ~/.config/cinnamon/spices
+mkdir -p ~/.local/share/cinnamon/desklets
+unzip -o cpuload@kimse.zip -d ~/.local/share/cinnamon/desklets
+unzip -o diskspace@schorschii.zip -d ~/.local/share/cinnamon/desklets
 echo "################################################################################"
 echo "#                           Configuring the firewall                           #"
 echo "################################################################################"
