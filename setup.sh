@@ -57,7 +57,7 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] 
 sudo apt update
 sudo apt purge flatpak gir1.2-flatpak-1.0 libflatpak0 sticky onboard seahorse drawing pix hexchat thunderbird gnome-calendar thingy mintbackup baobab timeshift mintwelcome warpinator mintstick -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial git build-essential gdb cmake openjdk-17-jdk maven rust-all rust-src nodejs android-sdk-platform-tools python3-pip htop minicom mat2 bleachbit dconf-editor pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp musescore3 -y
+sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake openjdk-17-jdk maven rust-all rust-src nodejs android-sdk-platform-tools squashfs-tools xorriso python3-pip htop minicom mat2 bleachbit dconf-editor pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp musescore3 -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
