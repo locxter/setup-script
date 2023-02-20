@@ -422,8 +422,8 @@ EOF
 sudo mkdir -p /etc/systemd
 sudo tee /etc/systemd/resolved.conf << EOF
 [Resolve]
-DNS=176.9.93.198#dnsforge.de
-DNS=176.9.1.117#dnsforge.de
+DNS=49.12.223.2#clean.dnsforge.de
+DNS=49.12.43.208#clean.dnsforge.de
 DNSOverTLS=yes
 EOF
 sudo systemctl enable systemd-resolved
