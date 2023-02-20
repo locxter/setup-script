@@ -197,6 +197,7 @@ echo "#                       Configuring scripts and programs                  
 echo "################################################################################"
 mkdir -p ~/.config/autostart
 cp redshift-gtk.desktop ~/.config/autostart/redshift-gtk.desktop
+cp workrave.desktop ~/.config/autostart/workrave.desktop
 if $DATA_DRIVE
 then
     tee ~/.config/autostart/mount-data-drive.desktop << EOF
@@ -316,6 +317,26 @@ email=54595101+locxter@users.noreply.github.com
 [init]
 defaultBranch = main
 EOF
+gsettings set org.workrave.breaks.daily-limit max-preludes 1
+gsettings set org.workrave.breaks.micro-pause max-preludes 1
+gsettings set org.workrave.breaks.rest-break max-preludes 1
+gsettings set org.workrave.sound enabled false
+gsettings set org.workrave.sound volume 0
+gsettings set org.workrave.timers.daily-limit limit 28800
+gsettings set org.workrave.timers.daily-limit snooze 900
+gsettings set org.workrave.timers.micro-pause auto-reset 30
+gsettings set org.workrave.timers.micro-pause limit 570
+gsettings set org.workrave.timers.micro-pause snooze 0
+gsettings set org.workrave.timers.rest-break auto-reset 300
+gsettings set org.workrave.timers.rest-break limit 3300
+gsettings set org.workrave.timers.rest-break snooze 0
+gsettings set org.workrave.gui.breaks.daily-limit skippable-break false
+gsettings set org.workrave.gui.breaks.micro-pause ignorable-break false
+gsettings set org.workrave.gui.breaks.micro-pause skippable-break false
+gsettings set org.workrave.gui.breaks.rest-break enable-shutdown false
+gsettings set org.workrave.gui.breaks.rest-break exercises 10
+gsettings set org.workrave.gui.breaks.rest-break ignorable-break false
+gsettings set org.workrave.gui.breaks.rest-break skippable-break false
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
 codium --install-extension vsciot-vscode.vscode-arduino --install-extension ms-vscode.cpptools --install-extension twxs.cmake --install-extension ms-vscode.cmake-tools --install-extension vscjava.vscode-java-debug --install-extension redhat.java --install-extension vscjava.vscode-maven --install-extension eg2.vscode-npm-script --install-extension vscjava.vscode-java-dependency --install-extension Tyriar.sort-lines --install-extension vscjava.vscode-java-test --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension panicbit.cargo
