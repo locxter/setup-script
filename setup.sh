@@ -325,7 +325,7 @@ gsettings set org.workrave.sound volume 0
 gsettings set org.workrave.timers.daily-limit limit 28800
 gsettings set org.workrave.timers.daily-limit snooze 900
 gsettings set org.workrave.timers.micro-pause auto-reset 30
-gsettings set org.workrave.timers.micro-pause limit 570
+gsettings set org.workrave.timers.micro-pause limit 1170
 gsettings set org.workrave.timers.micro-pause snooze 0
 gsettings set org.workrave.timers.rest-break auto-reset 300
 gsettings set org.workrave.timers.rest-break limit 3300
