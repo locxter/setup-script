@@ -395,7 +395,6 @@ gsettings set org.cinnamon.desktop.background picture-uri "file:///usr/share/bac
 gsettings set org.cinnamon.muffin center-new-windows true
 gsettings set org.cinnamon.muffin workspace-cycle true
 gsettings set org.cinnamon.muffin workspaces-only-on-primary true
-gsettings set org.cinnamon alttab-switcher-show-all-workspaces true
 gsettings set org.cinnamon.desktop.notifications display-notifications false
 gsettings set org.cinnamon.desktop.privacy remember-recent-files false
 gsettings set org.nemo.desktop volumes-visible false
