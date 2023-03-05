@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=bash -c "sleep 15; if test -e /media/locxter/data; then syncthing -no-browser; fi"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Start file sync

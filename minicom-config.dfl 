@@ -1,0 +1,5 @@
+pu port
+pu rtscts           No
+pu logconn          No
+pu logxfer          No
+pu addcarreturn     Yes
