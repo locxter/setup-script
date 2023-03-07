@@ -89,7 +89,7 @@ then
     tee ~/.config/autostart/mount-data-drive.desktop << EOF
 [Desktop Entry]
 Type=Application
-Exec=bash -c "sleep 15; if ! test -e /media/locxter/data; then while ! udisksctl unlock -b $LOCKED_DATA_DRIVE --key-file <(zenity --password --title='Mount data drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_DATA_DRIVE; syncthing -no-browser; fi"
+Exec=bash -c "sleep 5; if ! test -e /media/locxter/data; then while ! udisksctl unlock -b $LOCKED_DATA_DRIVE --key-file <(zenity --password --title='Mount data drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_DATA_DRIVE; syncthing -no-browser; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
@@ -102,7 +102,7 @@ then
     tee ~/.config/autostart/mount-backup-drive.desktop << EOF
 [Desktop Entry]
 Type=Application
-Exec=bash -c "sleep 15; if ! test -e /media/locxter/backup; then while ! udisksctl unlock -b $LOCKED_BACKUP_DRIVE --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_BACKUP_DRIVE; while ! test -e /media/locxter/data; do zenity --error --text='Data drive not mounted'; done; deja-dup --backup; fi"
+Exec=bash -c "sleep 5; if ! test -e /media/locxter/backup; then while ! udisksctl unlock -b $LOCKED_BACKUP_DRIVE --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_BACKUP_DRIVE; while ! test -e /media/locxter/data; do zenity --error --text='Data drive not mounted'; done; deja-dup --backup; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true

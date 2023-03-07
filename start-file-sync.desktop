@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=bash -c "sleep 15; if test -e /media/locxter/data; then syncthing -no-browser; fi"
+Exec=bash -c "sleep 5; if test -e /media/locxter/data; then syncthing -no-browser; fi"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
