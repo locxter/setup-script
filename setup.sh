@@ -55,9 +55,9 @@ echo "deb-src [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] 
 wget -qO - https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor | sudo dd of=/usr/share/keyrings/signal-desktop-keyring.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-desktop.list
 sudo apt update
-sudo apt purge *flatpak* *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift
+sudo apt purge *flatpak* *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake openjdk-17-jdk maven rust-all rust-src nodejs android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp musescore3 -y
+sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake openjdk-17-jdk maven rust-all rust-src nodejs android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium signal-desktop xournalpp musescore3 -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -167,6 +167,7 @@ gsettings set org.workrave.gui.breaks.rest-break enable-shutdown false
 gsettings set org.workrave.gui.breaks.rest-break exercises 5
 gsettings set org.workrave.gui.breaks.rest-break ignorable-break false
 gsettings set org.workrave.gui.breaks.rest-break skippable-break false
+mkdir -p ~/.local/share/onboard/themes/
 cp onboard.theme ~/.local/share/onboard/themes/locxter.theme
 gsettings set org.onboard layout '/usr/share/onboard/layouts/Small.onboard'
 gsettings set org.onboard schema-version '2.3'

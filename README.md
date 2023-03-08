@@ -12,4 +12,4 @@ I generally try to minimize dependencies, but I'm a one man crew and can therefo
 
 ## How to use it
 
-Simply make the `setup.sh` script executable via `chmod +x ./setup.sh` and execute it via `./setup.sh`. Then tweak some more settings manually to your liking and you should be ready to go. The most important shortcuts for using BSPWM are explained in [`shortcuts.md`](shortcuts.md).
+Simply make the `setup.sh` script executable via `chmod +x ./setup.sh` and execute it via `./setup.sh`. Then tweak some more settings manually to your liking (since I didn't bother to automate everything) and you should be ready to go. The most important shortcuts for using BSPWM are explained in [`shortcuts.md`](shortcuts.md).
