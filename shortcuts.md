@@ -122,6 +122,8 @@
 - Shortcut: `super + l`
 - Command: `bspc node -f east`
 
+## Move the node in the given direction
+
 - Shortcut: `super + shift + h`
 - Command: `bspc node -s west`
 
@@ -180,7 +182,7 @@
 - Shortcut: `super + i`
 - Command: `bash -c "bspc wm -h off; bspc node newer -f; bspc wm -h on"`
 
-## Focus or send to the given desktop
+## Focus the given desktop
 
 - Shortcut: `super + 1`
 - Command: `bspc desktop -f '^1'`
@@ -212,6 +214,8 @@
 - Shortcut: `super + 0`
 - Command: `bspc desktop -f '^10'`
 
+## Send node to the given desktop
+
 - Shortcut: `super + shift + 1`
 - Command: `bspc node -d '^1'`
 
@@ -242,7 +246,7 @@
 - Shortcut: `super + shift + 0`
 - Command: `bspc node -d '^10'`
 
-## Peselect the direction
+## Preselect the direction
 
 - Shortcut: `super + ctrl + h`
 - Command: `bspc node -p west`
