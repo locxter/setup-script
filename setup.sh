@@ -167,6 +167,9 @@ gsettings set org.workrave.gui.breaks.rest-break enable-shutdown false
 gsettings set org.workrave.gui.breaks.rest-break exercises 5
 gsettings set org.workrave.gui.breaks.rest-break ignorable-break false
 gsettings set org.workrave.gui.breaks.rest-break skippable-break false
+gsettings set org.workrave.gui trayicon-enabled true
+gsettings set org.workrave.gui.main-window enabled false
+gsettings set org.workrave.general usage-mode 1
 mkdir -p ~/.local/share/onboard/themes/
 cp onboard.theme ~/.local/share/onboard/themes/locxter.theme
 gsettings set org.onboard layout '/usr/share/onboard/layouts/Small.onboard'
