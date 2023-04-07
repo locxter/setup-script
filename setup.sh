@@ -118,7 +118,7 @@ mkdir -p ~/.config/Thunar
 unzip -o thunar-config.zip -d ~/.config/Thunar
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
-codium --install-extension eg2.vscode-npm-script --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.vscode-serial-monitor --install-extension panicbit.cargo --install-extension rangav.vscode-thunder-client --install-extension redhat.java --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vsciot-vscode.vscode-arduino --install-extension vscjava.vscode-java-debug --install-extension vscjava.vscode-java-dependency --install-extension vscjava.vscode-java-test --install-extension vscjava.vscode-maven --install-extension vscodevim.vim
+codium --install-extension esbenp.prettier-vscode --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.vscode-serial-monitor --install-extension panicbit.cargo --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension svelte.svelte-vscode --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vsciot-vscode.vscode-arduino --install-extension vscodevim.vim 
 mkdir -p ~/.arduino15
 cp arduino-config.txt ~/.arduino15/preferences.txt
 mkdir -p ~/Arduino/tools
