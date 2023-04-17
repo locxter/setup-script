@@ -60,7 +60,7 @@ sudo add-apt-repository ppa:cwchien/gradle -y
 sudo apt update
 sudo apt purge *flatpak* *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake openjdk-17-jdk maven kotlin gradle rust-all rust-src nodejs android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium intellij-idea-community signal-desktop telegram-desktop xournalpp musescore3 -y
+sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake openjdk-17-jdk maven kotlin gradle rust-all rust-src nodejs android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium intellij-idea-community signal-desktop telegram-desktop xournalpp musescore3 scribus -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
