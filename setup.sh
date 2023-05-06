@@ -56,11 +56,16 @@ wget -qO - https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor | sud
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-desktop.list
 wget -qO - https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc | gpg --dearmor | sudo tee /usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg > /dev/null
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg] http://jetbrains-ppa.s3-website.eu-central-1.amazonaws.com any main" | sudo tee /etc/apt/sources.list.d/jetbrains-ppa.list > /dev/null
-sudo add-apt-repository ppa:cwchien/gradle -y
+curl -s "https://get.sdkman.io" | bash
+source "/home/locxter/.sdkman/bin/sdkman-init.sh"
+sdk install java
+sdk install maven
+sdk install kotlin
+sdk install gradle
 sudo apt update
 sudo apt purge *flatpak* *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake openjdk-17-jdk maven kotlin gradle rust-all rust-src nodejs android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium intellij-idea-community signal-desktop telegram-desktop xournalpp musescore3 scribus -y
+sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake rust-all rust-src nodejs android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium intellij-idea-community signal-desktop telegram-desktop xournalpp musescore3 scribus -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
