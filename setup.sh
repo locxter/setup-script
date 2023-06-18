@@ -193,6 +193,21 @@ gsettings set org.onboard.window.landscape dock-height 300
 gsettings set org.onboard.window.landscape height 300
 gsettings set org.onboard.window.portrait dock-height 300
 gsettings set org.onboard.window.portrait height 300
+if $DATA_DRIVE
+then
+    rm -rf ~/.local/share/gnome-boxes
+    ln -s /media/locxter/data/tech-stuff/gnome-boxes/ ~/.local/share/gnome-boxes
+    rm -rf ~/Documents
+    ln -s /media/locxter/data/documents/ ~/Documents
+    rm -rf ~/Downloads
+    ln -s /media/locxter/data/downloads/ ~/Downloads
+    rm -rf ~/Music
+    ln -s /media/locxter/data/music/ ~/Music
+    rm -rf ~/Pictures
+    ln -s /media/locxter/data/pictures/ ~/Pictures
+    rm -rf ~/Videos
+    ln -s /media/locxter/data/videos/ ~/Videos
+fi
 echo "################################################################################"
 echo "#                      Tweaking the desktop to my likings                      #"
 echo "################################################################################"
