@@ -163,10 +163,10 @@ gsettings set org.workrave.sound volume 0
 gsettings set org.workrave.timers.daily-limit limit 28800
 gsettings set org.workrave.timers.daily-limit snooze 900
 gsettings set org.workrave.timers.micro-pause auto-reset 30
-gsettings set org.workrave.timers.micro-pause limit 1770
+gsettings set org.workrave.timers.micro-pause limit 3570
 gsettings set org.workrave.timers.micro-pause snooze 0
 gsettings set org.workrave.timers.rest-break auto-reset 150
-gsettings set org.workrave.timers.rest-break limit 3450
+gsettings set org.workrave.timers.rest-break limit 7050
 gsettings set org.workrave.timers.rest-break snooze 0
 gsettings set org.workrave.gui.breaks.daily-limit skippable-break false
 gsettings set org.workrave.gui.breaks.micro-pause ignorable-break false
@@ -177,7 +177,7 @@ gsettings set org.workrave.gui.breaks.rest-break ignorable-break false
 gsettings set org.workrave.gui.breaks.rest-break skippable-break false
 gsettings set org.workrave.gui trayicon-enabled true
 gsettings set org.workrave.gui.main-window enabled false
-gsettings set org.workrave.general usage-mode 1e
+gsettings set org.workrave.general usage-mode 1
 mkdir -p ~/.local/share/onboard/themes/
 cp onboard.theme ~/.local/share/onboard/themes/locxter.theme
 gsettings set org.onboard layout '/usr/share/onboard/layouts/Small.onboard'
