@@ -46,20 +46,11 @@ echo "##########################################################################
 echo "#              Removing unnecessary software, updating the system              #"
 echo "#                      and installing additional software                      #"
 echo "################################################################################"
-sudo flatpak uninstall --all --delete-data
-wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vscodium-keyring.gpg]   https://download.vscodium.com/debs vscodium main" | sudo tee /etc/apt/sources.list.d/vscodium.list
-wget -qO - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | sudo dd of=/usr/share/keyrings/nodesource-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_18.x jammy main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-echo "deb-src [arch=amd64 signed-by=/usr/share/keyrings/nodesource-keyring.gpg] https://deb.nodesource.com/node_18.x jammy main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
-wget -qO - https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor | sudo dd of=/usr/share/keyrings/signal-desktop-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main" | sudo tee /etc/apt/sources.list.d/signal-desktop.list
-wget -qO - https://s3.eu-central-1.amazonaws.com/jetbrains-ppa/0xA6E8698A.pub.asc | gpg --dearmor | sudo tee /usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg > /dev/null
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/jetbrains-ppa-archive-keyring.gpg] http://jetbrains-ppa.s3-website.eu-central-1.amazonaws.com any main" | sudo tee /etc/apt/sources.list.d/jetbrains-ppa.list > /dev/null
+sudo rm /etc/apt/preferences.d/nosnap.pref
 sudo apt update
-sudo apt purge *flatpak* *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift -y
+sudo apt purge *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs git build-essential gdb cmake rust-all rust-src nodejs android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape anki kiwix freecad arduino chromium codium intellij-idea-community signal-desktop telegram-desktop xournalpp musescore3 scribus mixxx zeal -y
+sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs snapd git build-essential gdb cmake android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino chromium telegram-desktop xournalpp musescore3 scribus mixxx zeal -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -70,7 +61,12 @@ then
 fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
+sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal -y
+sudo snap install node --classic
+sudo snap install codium --classic
+sudo snap install intellij-idea-community --classic
 pip3 install trimesh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 curl -s "https://get.sdkman.io" | bash
 source "/home/locxter/.sdkman/bin/sdkman-init.sh"
 sdk install java
