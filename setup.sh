@@ -61,7 +61,7 @@ then
 fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
-sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop -y
+sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop org.standardnotes.standardnotes com.tutanota.Tutanota -y
 sudo snap install node --classic
 sudo snap install codium --classic
 sudo snap install intellij-idea-community --classic
