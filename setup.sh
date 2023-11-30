@@ -48,7 +48,7 @@ echo "#                      and installing additional software                 
 echo "################################################################################"
 sudo rm /etc/apt/preferences.d/nosnap.pref
 sudo apt update
-sudo apt purge *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift -y
+sudo apt purge *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift brltty -y
 sudo apt full-upgrade -y
 sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs snapd git build-essential gdb cmake android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino chromium xournalpp musescore3 scribus mixxx zeal gnome-feeds audacity shotcut ffmpeg easytag solaar -y
 if $DATA_DRIVE
