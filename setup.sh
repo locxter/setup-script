@@ -50,7 +50,7 @@ sudo rm /etc/apt/preferences.d/nosnap.pref
 sudo apt update
 sudo apt purge *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift brltty -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs snapd git build-essential gdb cmake android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor workrave pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino chromium xournalpp musescore3 mixxx zeal gnome-feeds audacity shotcut ffmpeg easytag solaar kicad vlc -y
+sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs snapd git build-essential gdb cmake android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino chromium xournalpp musescore3 mixxx zeal gnome-feeds audacity shotcut ffmpeg easytag solaar kicad vlc -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -151,29 +151,6 @@ mkdir -p ~/.config/xournalpp
 unzip -o xournalpp-config.zip -d ~/.config/xournalpp
 mkdir -p ~/.local/share/rhythmbox
 cp rhythmbox-database.xml ~/.local/share/rhythmbox/rhythmdb.xml
-gsettings set org.workrave.breaks.daily-limit max-preludes 1
-gsettings set org.workrave.breaks.micro-pause max-preludes 1
-gsettings set org.workrave.breaks.rest-break max-preludes 1
-gsettings set org.workrave.sound enabled false
-gsettings set org.workrave.sound volume 0
-gsettings set org.workrave.timers.daily-limit limit 28800
-gsettings set org.workrave.timers.daily-limit snooze 900
-gsettings set org.workrave.timers.micro-pause auto-reset 30
-gsettings set org.workrave.timers.micro-pause limit 3570
-gsettings set org.workrave.timers.micro-pause snooze 0
-gsettings set org.workrave.timers.rest-break auto-reset 150
-gsettings set org.workrave.timers.rest-break limit 7050
-gsettings set org.workrave.timers.rest-break snooze 0
-gsettings set org.workrave.gui.breaks.daily-limit skippable-break false
-gsettings set org.workrave.gui.breaks.micro-pause ignorable-break false
-gsettings set org.workrave.gui.breaks.micro-pause skippable-break false
-gsettings set org.workrave.gui.breaks.rest-break enable-shutdown false
-gsettings set org.workrave.gui.breaks.rest-break exercises 5
-gsettings set org.workrave.gui.breaks.rest-break ignorable-break false
-gsettings set org.workrave.gui.breaks.rest-break skippable-break false
-gsettings set org.workrave.gui trayicon-enabled true
-gsettings set org.workrave.gui.main-window enabled false
-gsettings set org.workrave.general usage-mode 1
 mkdir -p ~/.local/share/onboard/themes/
 cp onboard.theme ~/.local/share/onboard/themes/locxter.theme
 gsettings set org.onboard layout '/usr/share/onboard/layouts/Small.onboard'
