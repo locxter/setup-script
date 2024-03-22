@@ -48,9 +48,9 @@ echo "#                      and installing additional software                 
 echo "################################################################################"
 sudo rm /etc/apt/preferences.d/nosnap.pref
 sudo apt update
-sudo apt purge *xfwm4*  *metacity* *compiz* xfce4-appfinder mintbackup mintstick mintwelcome warpinator hexchat drawing seahorse xfce4-dict baobab thingy sticky mintdesktop light-locker-settings pix thunderbird timeshift brltty -y
+sudo apt purge brltty gnome-calendar gnome-contacts geary gnome-weather baobab seahorse com.github.donadigo.eddy popsicle popsicle-gtk -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial mint-meta-codecs snapd git build-essential gdb cmake android-sdk-platform-tools python3-pip bspwm htop minicom mat2 bleachbit dconf-editor pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino chromium xournalpp musescore3 mixxx zeal gnome-feeds audacity shotcut ffmpeg easytag solaar kicad vlc -y
+sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras qt5-style-plugins snapd git build-essential gdb cmake android-sdk-platform-tools python3-pip htop lm-sensors neofetch minicom curl mat2 gedit-plugins bleachbit dconf-editor pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino xournalpp musescore3 mixxx gnome-feeds audacity shotcut ffmpeg easytag solaar kicad vlc -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -61,10 +61,16 @@ then
 fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
+sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop org.standardnotes.standardnotes com.tutanota.Tutanota -y
+sudo snap install pop-themes
+sudo snap install chromium
 sudo snap install node --classic
 sudo snap install codium --classic
 sudo snap install intellij-idea-community --classic
+for i in $(snap connections | grep gtk-common-themes:gtk-3-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:gtk-3-themes; done
+for i in $(snap connections | grep gtk-common-themes:gtk-2-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:gtk-2-themes; done
+for i in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:icon-themes; done
 pip3 install trimesh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 curl -s "https://get.sdkman.io" | bash
@@ -73,6 +79,9 @@ sdk install java
 sdk install maven
 sdk install kotlin
 sdk install gradle
+wget http://packages.linuxmint.com/pool/main/w/webapp-manager/webapp-manager_1.3.4_all.deb
+sudo apt install ./webapp-manager_1.3.4_all.deb -y
+rm webapp-manager_1.3.4_all.deb
 mkdir -p ~/.local/share/applications
 unzip -o webapp-config-1.zip -d ~/.local/share/applications
 mkdir -p ~/.local/share/ice
@@ -85,9 +94,8 @@ sudo usermod -a -G tty locxter
 sudo patchelf --add-needed libserialport.so.0 /usr/lib/x86_64-linux-gnu/liblistSerialsj.so.1.4.0
 sudo mkdir -p /etc/minicom
 sudo cp minicom-config.dfl /etc/minicom/minirc.dfl
-sudo cp java-fix.sh /etc/profile.d/java-fix.sh
+echo "export QT_QPA_PLATFORMTHEME=gtk2" >> ~/.profile
 mkdir -p ~/.config/autostart
-unzip -o autostart.zip -d ~/.config/autostart
 if $DATA_DRIVE
 then
     tee ~/.config/autostart/mount-data-drive.desktop << EOF
@@ -115,8 +123,6 @@ EOF
     cp start-backup.desktop ~/.config/autostart/start-backup.desktop
 fi
 cp .gitconfig ~/.gitconfig
-mkdir -p ~/.config/Thunar
-unzip -o thunar-config.zip -d ~/.config/Thunar
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
 codium --install-extension esbenp.prettier-vscode --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.vscode-serial-monitor --install-extension panicbit.cargo --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension svelte.svelte-vscode --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vsciot-vscode.vscode-arduino
@@ -151,21 +157,6 @@ mkdir -p ~/.config/xournalpp
 unzip -o xournalpp-config.zip -d ~/.config/xournalpp
 mkdir -p ~/.local/share/rhythmbox
 cp rhythmbox-database.xml ~/.local/share/rhythmbox/rhythmdb.xml
-mkdir -p ~/.local/share/onboard/themes/
-cp onboard.theme ~/.local/share/onboard/themes/locxter.theme
-gsettings set org.onboard layout '/usr/share/onboard/layouts/Small.onboard'
-gsettings set org.onboard schema-version '2.3'
-gsettings set org.onboard start-minimized true
-gsettings set org.onboard system-theme-associations "{'HighContrast': 'HighContrast', 'HighContrastInverse': 'HighContrastInverse', 'LowContrast': 'LowContrast', 'ContrastHighInverse': 'HighContrastInverse', 'Default': '', 'Mint-Y-Dark-Aqua': '/home/locxter/.local/share/onboard/themes/locxter.theme'}"
-gsettings set org.onboard theme '/home/locxter/.local/share/onboard/themes/locxter.theme'
-gsettings set org.onboard use-system-defaults false
-gsettings set org.onboard.window docking-enabled true
-gsettings set org.onboard.window docking-monitor 'primary'
-gsettings set org.onboard.window docking-shrink-workarea true
-gsettings set org.onboard.window.landscape dock-height 300
-gsettings set org.onboard.window.landscape height 300
-gsettings set org.onboard.window.portrait dock-height 300
-gsettings set org.onboard.window.portrait height 300
 if $DATA_DRIVE
 then
     rm -rf ~/.local/share/gnome-boxes
@@ -185,15 +176,46 @@ echo "##########################################################################
 echo "#                      Tweaking the desktop to my likings                      #"
 echo "################################################################################"
 sudo cp wallpaper.jpeg /usr/share/backgrounds/wallpaper.jpeg
-sudo mkdir -p /etc/lightdm
-sudo cp slick-greeter.conf /etc/lightdm/slick-greeter.conf
-sudo rm -rf /usr/share/xsessions/bspwm.desktop
-mkdir -p ~/.config/bspwm
-cp bspwmrc ~/.config/bspwm/bspwmrc
-chmod +x ~/.config/bspwm/bspwmrc
-mkdir -p ~/.config/xfce4
-unzip -o xfce4-config.zip -d ~/.config/xfce4
-cp profile-picture.jpeg ~/.face
+gsettings set org.gnome.shell app-picker-layout "[{'ca.desrt.dconf-editor.desktop': <{'position': <0>}>, 'Pop-Office': <{'position': <1>}>, 'org.gnome.DejaDup.desktop': <{'position': <2>}>, 'syncthing-start.desktop': <{'position': <3>}>, 'syncthing-ui.desktop': <{'position': <4>}>, 'codium_codium.desktop': <{'position': <5>}>, 'org.gnome.Calculator.desktop': <{'position': <6>}>, 'org.gnome.gedit.desktop': <{'position': <7>}>, 'arduino.desktop': <{'position': <8>}>, 'audacity.desktop': <{'position': <9>}>, 'org.bleachbit.BleachBit.desktop': <{'position': <10>}>, 'org.gnome.Boxes.desktop': <{'position': <11>}>, 'bleachbit-root.desktop': <{'position': <12>}>, 'org.gnome.NetworkDisplays.desktop': <{'position': <13>}>, 'easytag.desktop': <{'position': <14>}>, 'org.gabmus.gfeeds.desktop': <{'position': <15>}>, 'htop.desktop': <{'position': <16>}>, 'display-im6.q16.desktop': <{'position': <17>}>, 'com.ultimaker.cura.desktop': <{'position': <18>}>, 'org.inkscape.Inkscape.desktop': <{'position': <19>}>, 'org.kicad.kicad.desktop': <{'position': <20>}>, 'org.kicad.gerbview.desktop': <{'position': <21>}>}, {'org.kicad.bitmap2component.desktop': <{'position': <0>}>, 'org.kicad.pcbcalculator.desktop': <{'position': <1>}>, 'org.kicad.pcbnew.desktop': <{'position': <2>}>, 'org.kicad.eeschema.desktop': <{'position': <3>}>, 'org.kiwix.desktop.desktop': <{'position': <4>}>, 'intellij-idea-community_intellij-idea-community.desktop': <{'position': <5>}>, 'minicom.desktop': <{'position': <6>}>, 'org.mixxx.Mixxx.desktop': <{'position': <7>}>, 'mscore3.desktop': <{'position': <8>}>, 'com.github.jeromerobert.pdfarranger.desktop': <{'position': <9>}>, 'org.shotcut.Shotcut.desktop': <{'position': <10>}>, 'solaar.desktop': <{'position': <11>}>, 'com.tutanota.Tutanota.desktop': <{'position': <12>}>, 'tilp.desktop': <{'position': <13>}>, 'vlc.desktop': <{'position': <14>}>, 'com.github.xournalpp.xournalpp.desktop': <{'position': <15>}>, 'org.zealdocs.Zeal.desktop': <{'position': <16>}>, 'org.signal.Signal.desktop': <{'position': <17>}>, 'chromium_chromium.desktop': <{'position': <18>}>, 'freecad.desktop': <{'position': <19>}>, 'net.ankiweb.Anki.desktop': <{'position': <20>}>, 'org.standardnotes.standardnotes.desktop': <{'position': <21>}>, 'org.telegram.desktop.desktop': <{'position': <22>}>, 'org.gnome.FileRoller.desktop': <{'position': <23>}>}, {'webapp-manager.desktop': <{'position': <0>}>, 'gucharmap.desktop': <{'position': <1>}>, 'simple-scan.desktop': <{'position': <2>}>, 'org.gnome.Evince.desktop': <{'position': <3>}>, 'org.gnome.Extensions.desktop': <{'position': <4>}>, 'org.gnome.font-viewer.desktop': <{'position': <5>}>, 'yelp.desktop': <{'position': <6>}>, 'org.gnome.eog.desktop': <{'position': <7>}>, 'pop-cosmic-applications.desktop': <{'position': <8>}>, 'pop-cosmic-workspaces.desktop': <{'position': <9>}>, 'info.desktop': <{'position': <10>}>, 'org.gnome.Totem.desktop': <{'position': <11>}>, 'nm-connection-editor.desktop': <{'position': <12>}>, 'org.gnome.DiskUtility.desktop': <{'position': <13>}>, 'gnome-language-selector.desktop': <{'position': <14>}>, 'org.gnome.PowerStats.desktop': <{'position': <15>}>, 'gnome-session-properties.desktop': <{'position': <16>}>, 'gnome-system-monitor.desktop': <{'position': <17>}>, 'libreoffice-startcenter.desktop': <{'position': <18>}>, 'libreoffice-calc.desktop': <{'position': <19>}>, 'libreoffice-draw.desktop': <{'position': <20>}>, 'libreoffice-impress.desktop': <{'position': <21>}>, 'libreoffice-math.desktop': <{'position': <22>}>, 'libreoffice-writer.desktop': <{'position': <23>}>}]"
+gsettings set org.gnome.shell favorite-apps "['pop-cosmic-launcher.desktop', 'firefox.desktop', 'com.tutanota.Tutanota.desktop', 'org.standardnotes.standardnotes.desktop', 'webapp-Notion6139.desktop', 'webapp-WhatsApp6317.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop']"
+gsettings set org.gnome.shell enabled-extensions "['pop-cosmic@system76.com', 'pop-shell@system76.com', 'system76-power@system76.com', 'ubuntu-appindicators@ubuntu.com', 'cosmic-dock@system76.com', 'cosmic-workspaces@system76.com', 'popx11gestures@system76.com']"
+gsettings set org.gnome.shell disabled-extensions "['ding@rastersoft.com']"
+gsettings set org.gnome.shell.extensions.pop-shell tile-by-default true
+gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'LEFT'
+gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+gsettings set org.gnome.shell.extensions.dash-to-dock intellihide true
+gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
+gsettings set org.gnome.mutter center-new-windows true
+gsettings set org.gnome.mutter dynamic-workspaces false
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 10
+gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/wallpaper.jpeg'
+gsettings set org.gnome.desktop.background picture-uri-dark 'file:///usr/share/backgrounds/wallpaper.jpeg'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Pop-dark'
+gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:close'
+gsettings set org.gnome.shell.extensions.pop-shell activate-launcher "['<Super>']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>Home', '<Super>1']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-7 "['<Super>7']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-8 "['<Super>8']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-9 "['<Super>9']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-10 "['<Super>0']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Shift><Super>Home', '<Shift><Super>1']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Shift><Super>2']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Shift><Super>3']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Shift><Super>4']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Shift><Super>5']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Shift><Super>6']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 "['<Shift><Super>7']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-8 "['<Shift><Super>8']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Shift><Super>9']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-10 "['<Shift><Super>0']"
 echo "################################################################################"
 echo "#                           Configuring the firewall                           #"
 echo "################################################################################"
