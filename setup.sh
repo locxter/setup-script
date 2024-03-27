@@ -67,6 +67,7 @@ sudo snap install chromium
 sudo snap install node --classic
 sudo snap install codium --classic
 sudo snap install intellij-idea-community --classic
+sudo snap install android-studio --classic
 for i in $(snap connections | grep gtk-common-themes:gtk-3-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:gtk-3-themes; done
 for i in $(snap connections | grep gtk-common-themes:gtk-2-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:gtk-2-themes; done
 for i in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:icon-themes; done
