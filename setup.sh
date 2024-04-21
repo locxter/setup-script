@@ -62,6 +62,7 @@ sudo apt autoremove --purge -y
 sudo apt autoclean
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop org.standardnotes.standardnotes com.tutanota.Tutanota -y
+sudo snap install gtk-common-themes
 sudo snap install pop-themes
 sudo snap install chromium
 sudo snap install node --classic
