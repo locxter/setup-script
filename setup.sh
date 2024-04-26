@@ -73,6 +73,7 @@ for i in $(snap connections | grep gtk-common-themes:gtk-3-themes | awk '{print 
 for i in $(snap connections | grep gtk-common-themes:gtk-2-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:gtk-2-themes; done
 for i in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:icon-themes; done
 pip3 install trimesh
+curl -fsSL https://tailscale.com/install.sh | sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 curl -s "https://get.sdkman.io" | bash
 source "/home/locxter/.sdkman/bin/sdkman-init.sh"
