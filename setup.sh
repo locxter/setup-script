@@ -53,7 +53,7 @@ sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
-fiusage of lvm in linux
+fi
 if $BACKUP_DRIVE
 then
     sudo apt install deja-dup -y
