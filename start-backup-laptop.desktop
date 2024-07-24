@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=bash -c "sleep 5; while ! test -e /media/locxter/backup || ! test -e /media/locxter/data; do sleep 60; done; deja-dup --backup"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Start backup

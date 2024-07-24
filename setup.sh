@@ -30,15 +30,25 @@ if [[ $REPLY =~ [Yy]+ ]]
 then
     BACKUP_DRIVE=true
     echo "################################################################################"
-    echo "#            Enter the device representing the locked backup drive:            #"
+    echo "#       Is the backup drive permanently connected like on a desktop?[y/N]      #"
     echo "################################################################################"
     read REPLY
-    LOCKED_BACKUP_DRIVE=$REPLY
-    echo "################################################################################"
-    echo "#           Enter the device representing the unlocked backup drive:           #"
-    echo "################################################################################"
-    read REPLY
-    UNLOCKED_BACKUP_DRIVE=$REPLY
+    if [[ $REPLY =~ [Yy]+ ]]
+    then
+        BACKUP_ON_DESKTOP=true
+        echo "################################################################################"
+        echo "#            Enter the device representing the locked backup drive:            #"
+        echo "################################################################################"
+        read REPLY
+        LOCKED_BACKUP_DRIVE=$REPLY
+        echo "################################################################################"
+        echo "#           Enter the device representing the unlocked backup drive:           #"
+        echo "################################################################################"
+        read REPLY
+        UNLOCKED_BACKUP_DRIVE=$REPLY
+    else
+        BACKUP_ON_DESKTOP=false
+    fi
 else
     BACKUP_DRIVE=false
 fi
@@ -113,7 +123,9 @@ EOF
 fi
 if $BACKUP_DRIVE
 then
-    tee ~/.config/autostart/mount-backup-drive.desktop << EOF
+    if $BACKUP_ON_DESKTOP
+    then
+        tee ~/.config/autostart/mount-backup-drive.desktop << EOF
 [Desktop Entry]
 Type=Application
 Exec=bash -c "sleep 5; if ! test -e /media/locxter/backup; then while ! udisksctl unlock -b $LOCKED_BACKUP_DRIVE --key-file <(zenity --password --title='Mount backup drive' | tr -d '\n'); do zenity --error --text='Wrong password'; done; udisksctl mount -b $UNLOCKED_BACKUP_DRIVE; while ! test -e /media/locxter/data; do zenity --error --text='Data drive not mounted'; done; deja-dup --backup; fi"
@@ -122,7 +134,10 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name=Mount backup drive
 EOF
-    cp start-backup.desktop ~/.config/autostart/start-backup.desktop
+        cp start-backup-desktop.desktop ~/.config/autostart/start-backup.desktop
+    else
+        cp start-backup-laptop.desktop ~/.config/autostart/start-backup.desktop
+    fi
 fi
 cp .gitconfig ~/.gitconfig
 mkdir -p ~/.local/share/nautilus/scripts
