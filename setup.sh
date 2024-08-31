@@ -59,7 +59,7 @@ echo "##########################################################################
 sudo apt update
 sudo apt purge brltty gnome-calendar gnome-contacts geary gnome-weather baobab seahorse com.github.donadigo.eddy popsicle popsicle-gtk totem -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras qt5-style-plugins snapd git build-essential gdb cmake qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils android-sdk-platform-tools python3-pip htop lm-sensors neofetch minicom curl mat2 gedit-plugins bleachbit dconf-editor texlive-latex-extra pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino xournalpp musescore3 mixxx gnome-feeds audacity shotcut ffmpeg easytag solaar kicad kicad-packages3d vlc rhythmbox thunar gimp gparted -y
+sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras qt5-style-plugins snapd git build-essential gdb cmake qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils android-sdk-platform-tools python3-pip htop lm-sensors neofetch minicom curl mat2 gedit-plugins bleachbit dconf-editor texlive-latex-extra pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino xournalpp musescore3 mixxx gnome-feeds audacity shotcut ffmpeg easytag solaar kicad kicad-packages3d vlc rhythmbox thunar gimp gparted paperwork-gtk paperwork-gtk-l10n-en paperwork-gtk-l10n-de paperwork-shell -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -71,7 +71,7 @@ fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop org.standardnotes.standardnotes com.tutanota.Tutanota -y
+sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop org.standardnotes.standardnotes com.tutanota.Tutanota com.spotify.Client -y
 sudo snap install gtk-common-themes
 sudo snap install pop-themes
 sudo snap install chromium
@@ -82,7 +82,7 @@ sudo snap install android-studio --classic
 for i in $(snap connections | grep gtk-common-themes:gtk-3-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:gtk-3-themes; done
 for i in $(snap connections | grep gtk-common-themes:gtk-2-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:gtk-2-themes; done
 for i in $(snap connections | grep gtk-common-themes:icon-themes | awk '{print $2}'); do sudo snap connect $i pop-themes:icon-themes; done
-pip3 install trimesh
+pip3 install trimesh spotdl
 curl -fsSL https://tailscale.com/install.sh | sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 curl -s "https://get.sdkman.io" | bash
