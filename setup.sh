@@ -59,7 +59,7 @@ echo "##########################################################################
 sudo apt update
 sudo apt purge brltty gnome-calendar gnome-contacts geary gnome-weather baobab seahorse com.github.donadigo.eddy popsicle popsicle-gtk totem -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras qt5-style-plugins snapd git build-essential gdb cmake qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils android-sdk-platform-tools python3-pip htop lm-sensors neofetch minicom curl mat2 gedit-plugins bleachbit dconf-editor texlive-latex-extra pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino xournalpp musescore3 mixxx gnome-feeds audacity shotcut ffmpeg easytag solaar kicad kicad-packages3d vlc rhythmbox thunar gimp gparted paperwork-gtk paperwork-gtk-l10n-en paperwork-gtk-l10n-de paperwork-shell -y
+sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras qt5-style-plugins snapd git build-essential gdb cmake qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils android-sdk-platform-tools python3-pip htop lm-sensors neofetch minicom curl mat2 gedit-plugins bleachbit dconf-editor texlive-latex-extra pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino xournalpp musescore3 mixxx gnome-feeds audacity shotcut ffmpeg easytag solaar kicad kicad-packages3d vlc rhythmbox thunar gimp gparted paperwork-gtk paperwork-gtk-l10n-en paperwork-gtk-l10n-de paperwork-shell transmission -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
