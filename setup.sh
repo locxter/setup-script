@@ -144,7 +144,7 @@ mkdir -p ~/.local/share/nautilus/scripts
 unzip -o nautilus-scripts.zip -d ~/.local/share/nautilus/scripts
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
-codium --install-extension esbenp.prettier-vscode --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.vscode-serial-monitor --install-extension panicbit.cargo --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension svelte.svelte-vscode --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vscode-arduino.vscode-arduino-community
+codium --install-extension esbenp.prettier-vscode --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.vscode-serial-monitor --install-extension panicbit.cargo --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension svelte.svelte-vscode --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vscode-arduino.vscode-arduino-community --install-extension james-yu.latex-workshop
 mkdir -p ~/.arduino15
 cp arduino-config.txt ~/.arduino15/preferences.txt
 mkdir -p ~/Arduino/tools
