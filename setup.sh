@@ -59,7 +59,7 @@ echo "##########################################################################
 sudo apt update
 sudo apt purge brltty gnome-calendar gnome-contacts geary gnome-weather baobab seahorse com.github.donadigo.eddy popsicle popsicle-gtk totem -y
 sudo apt full-upgrade -y
-sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras qt5-style-plugins snapd git build-essential gdb cmake qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils android-sdk-platform-tools python3-pip htop lm-sensors neofetch minicom curl mat2 gedit-plugins bleachbit dconf-editor texlive-full pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino xournalpp musescore3 mixxx gnome-feeds audacity shotcut ffmpeg easytag solaar kicad kicad-packages3d vlc rhythmbox thunar gimp gparted paperwork-gtk paperwork-gtk-l10n-en paperwork-gtk-l10n-de paperwork-shell transmission texstudio -y
+sudo apt install libserialport0 patchelf python3-serial ubuntu-restricted-extras qt5-style-plugins snapd git build-essential gdb cmake qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils android-sdk-platform-tools python3-pip htop lm-sensors neofetch minicom curl mat2 gedit-plugins bleachbit dconf-editor texlive-full pdfarranger gnome-boxes tilp2 cura inkscape kiwix freecad arduino xournalpp musescore3 mixxx gnome-feeds audacity shotcut ffmpeg easytag solaar kicad kicad-packages3d vlc rhythmbox thunar gimp gparted paperwork-gtk paperwork-gtk-l10n-en paperwork-gtk-l10n-de paperwork-shell transmission texstudio swi-prolog-full matlab-support -y
 if $DATA_DRIVE
 then
     sudo apt install syncthing -y
@@ -71,7 +71,7 @@ fi
 sudo apt autoremove --purge -y
 sudo apt autoclean
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop org.standardnotes.standardnotes com.tutanota.Tutanota com.spotify.Client md.obsidian.Obsidian com.github.tchx84.Flatseal -y
+sudo flatpak install flathub org.gnome.NetworkDisplays net.ankiweb.Anki org.signal.Signal org.telegram.desktop org.standardnotes.standardnotes com.tutanota.Tutanota com.spotify.Client md.obsidian.Obsidian com.github.tchx84.Flatseal de.bund.ausweisapp.ausweisapp2 -y
 sudo snap install gtk-common-themes
 sudo snap install pop-themes
 sudo snap install chromium
@@ -145,7 +145,7 @@ mkdir -p ~/.local/share/nautilus/scripts
 unzip -o nautilus-scripts.zip -d ~/.local/share/nautilus/scripts
 mkdir -p ~/.config/VSCodium
 unzip -o vscodium-config.zip -d ~/.config/VSCodium
-codium --install-extension esbenp.prettier-vscode --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.vscode-serial-monitor --install-extension panicbit.cargo --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension svelte.svelte-vscode --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vscode-arduino.vscode-arduino-community --install-extension james-yu.latex-workshop
+codium --install-extension amauryrabouan.new-vsc-prolog --install-extension esbenp.prettier-vscode --install-extension ms-vscode.cmake-tools --install-extension ms-vscode.cpptools --install-extension ms-vscode.vscode-serial-monitor --install-extension panicbit.cargo --install-extension rangav.vscode-thunder-client --install-extension rust-lang.rust-analyzer --install-extension serayuzgur.crates --install-extension svelte.svelte-vscode --install-extension twxs.cmake --install-extension Tyriar.sort-lines --install-extension vscode-arduino.vscode-arduino-community --install-extension james-yu.latex-workshop
 mkdir -p ~/.arduino15
 cp arduino-config.txt ~/.arduino15/preferences.txt
 mkdir -p ~/Arduino/tools
